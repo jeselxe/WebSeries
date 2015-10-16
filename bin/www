@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+var app = require('../app');
+var models = require("../models");
+
+var PORT = 8000;
+
+models.sequelize.sync({force: true}).then(function(){
+	return models.Usuario.create({nickname:'Pepe', password:'pepe'});
+}).then(function(usuario){
+	return models.Serie.bulkCreate([
+		{title: 'The Big Bang Theory', description: 'descripción de la serie The Big Bang Theory', UsuarioId: usuario.id},
+		{title: 'Breaking Bad', description: 'descripción de la serie Breaking Bad', UsuarioId: usuario.id}
+	]);
+}).then(function(){
+	app.listen(PORT, function () {
+		console.log("Server running on port " + PORT);
+	});
+});
