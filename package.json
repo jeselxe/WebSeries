@@ -1,5 +1,5 @@
 {
-  "name": "practica3",
+  "name": "WebSeries",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -7,8 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./bin/www"
   },
-  "author": "jesus",
-  "license": "ISC",
+  "author": {
+    "name" : "Jesus Gallego",
+    "email": "jesusgallego@outlook.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git//github.com/jeselxe/WebSeries.git"
+  },
   "dependencies": {
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
