@@ -91,6 +91,46 @@ app.get('/api/usuario/:id', function(req, res) {
 		
 });
 
+app.post('/api/usuario', function(req, res) {	
+	Usuario.create({
+		nickname: req.body.nickname,
+		password: req.body.password
+	}).then(function() {
+		res.status(201).end();
+	});
+});
+
+app.delete('/api/usuario/:id', function(req, res) {
+	Usuario.destroy({
+		where: {
+			id: req.params.id
+		}
+	}).then(function() {
+		res.send("Usuario Eliminado");
+	});
+	
+});
+
+app.put('/api/usuario/:id', function(req, res) {
+	Usuario.findById(req.params.id).then(function(user){
+		if (user) {
+			var options = {};
+			for (var param in req.body) {
+				options[param] =  req.body[param];
+			}
+			
+			user.update(options)
+			.then(function () {
+				res.status(204).end();
+			});
+		}
+		else {
+			res.status(404).end();
+		}
+	});
+	
+});
+
 var sequelize = new Sequelize('bd', '', '', { 
 	dialect: 'sqlite', 
 	storage: 'bd.sqlite' 
