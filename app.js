@@ -26,61 +26,84 @@ app.post('/api/series', function(req, res) {
 });
 
 app.get('/:id', function(req, res) {
-	Serie.findById(req.params.id).then(function(serie) {
-		if (serie) {
-			res.send(serie);
-		}
-		else {
-			res.status(404).end();
-		}
-	});
-	
+	var id = req.params.id;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id no es un número");
+	}
+	else {
+		Serie.findById(id).then(function(serie) {
+			if (serie) {
+				res.send(serie);
+			}
+			else {
+				res.status(404).end();
+			}
+		});
+	}
 });
 
 app.delete('/api/series/:id', function(req, res) {
-	Serie.destroy({
-		where: {
-			id: req.params.id
-		}
-	}).then(function() {
-		res.send("serie Eliminada");
-	});
-	
+	var id = req.params.id;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id no es un número");
+	}
+	else {
+		Serie.destroy({
+			where: {
+				id: id
+			}
+		}).then(function() {
+			res.send("serie Eliminada");
+		});
+	}
 });
 
 app.put('/api/series/:id', function(req, res) {
-	Serie.findById(req.params.id).then(function(serie){
-		if (serie) {
-			var options = {};
-			for (var param in req.body) {
-				options[param] =  req.body[param];
+	var id = req.params.id;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id no es un número");
+	}
+	else {
+		Serie.findById(id).then(function(serie){
+			if (serie) {
+				var options = {};
+				for (var param in req.body) {
+					options[param] =  req.body[param];
+				}
+				
+				serie.update(options)
+				.then(function () {
+					res.status(204).end();
+				});
 			}
-			
-			serie.update(options)
-			.then(function () {
-				res.status(204).end();
-			});
-		}
-		else {
-			res.status(404).end();
-		}
-	});
-	
+			else {
+				res.status(404).end();
+			}
+		});
+	}
 });
 
 app.get('/api/usuario/:id/series', function(req, res) {
-
-		Usuario.findById(req.params.id).then(function(user) {
+	var id = req.params.id;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id no es un número");
+	}
+	else {
+		Usuario.findById(id).then(function(user) {
 			return user.getSeries();
 		}).then(function(series) {
 			res.send(series);
 		});
-	
+	}
 });
 
 app.get('/api/usuario/:id', function(req, res) {
-
-		Usuario.findById(req.params.id).then(function(user) {
+	var id = req.params.id;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id no es un número");
+	}
+	else {
+		Usuario.findById(id).then(function(user) {
 			if (user) {
 				res.send(user);
 			} 
@@ -88,7 +111,7 @@ app.get('/api/usuario/:id', function(req, res) {
 				res.status(404).end();	
 			}
 		});
-		
+	}
 });
 
 app.post('/api/usuario', function(req, res) {	
@@ -101,34 +124,44 @@ app.post('/api/usuario', function(req, res) {
 });
 
 app.delete('/api/usuario/:id', function(req, res) {
-	Usuario.destroy({
-		where: {
-			id: req.params.id
-		}
-	}).then(function() {
-		res.send("Usuario Eliminado");
-	});
-	
+	var id = req.params.id;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id no es un número");
+	}
+	else {
+		Usuario.destroy({
+			where: {
+				id: id
+			}
+		}).then(function() {
+			res.send("Usuario Eliminado");
+		});
+	}
 });
 
 app.put('/api/usuario/:id', function(req, res) {
-	Usuario.findById(req.params.id).then(function(user){
-		if (user) {
-			var options = {};
-			for (var param in req.body) {
-				options[param] =  req.body[param];
+	var id = req.params.id;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id no es un número");
+	}
+	else {
+		Usuario.findById(id).then(function(user){
+			if (user) {
+				var options = {};
+				for (var param in req.body) {
+					options[param] =  req.body[param];
+				}
+				
+				user.update(options)
+				.then(function () {
+					res.status(204).end();
+				});
 			}
-			
-			user.update(options)
-			.then(function () {
-				res.status(204).end();
-			});
-		}
-		else {
-			res.status(404).end();
-		}
-	});
-	
+			else {
+				res.status(404).end();
+			}
+		});
+	}
 });
 
 var sequelize = new Sequelize('bd', '', '', { 
