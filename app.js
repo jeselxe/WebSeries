@@ -1,7 +1,11 @@
 var express = require('express');
 var Sequelize = require("sequelize");
+var bodyParser = require('body-parser');
 
 var app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 var PORT = 8000;
 
@@ -9,6 +13,59 @@ app.get('/api/series', function(req, res) {
 	Serie.findAll().then(function(series) {
 		res.send(series);
 	});
+});
+
+app.post('/api/series', function(req, res) {	
+	Serie.create({
+		title: req.body.title,
+		description: req.body.description,
+		UsuarioId: req.body.user
+	}).then(function() {
+		res.status(201).send("Serie creada correctamente");
+	});
+});
+
+app.get('/:id', function(req, res) {
+	Serie.findById(req.params.id).then(function(serie) {
+		if (serie) {
+			res.send(serie);
+		}
+		else {
+			res.status(404).end();
+		}
+	});
+	
+});
+
+app.delete('/api/series/:id', function(req, res) {
+	Serie.destroy({
+		where: {
+			id: req.params.id
+		}
+	}).then(function() {
+		res.send("serie Eliminada");
+	});
+	
+});
+
+app.put('/api/series/:id', function(req, res) {
+	Serie.findById(req.params.id).then(function(serie){
+		if (serie) {
+			var options = {};
+			for (var param in req.body) {
+				options[param] =  req.body[param];
+			}
+			
+			serie.update(options)
+			.then(function () {
+				res.status(204).end();
+			});
+		}
+		else {
+			res.status(404).end();
+		}
+	});
+	
 });
 
 app.get('/api/usuario/:id/series', function(req, res) {
