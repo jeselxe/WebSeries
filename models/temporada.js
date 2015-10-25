@@ -3,7 +3,7 @@
 module.exports = function(sequelize, DataTypes) {
 	
 	var Temporada = sequelize.define('Temporada', {
-		season: DataTypes.Integer
+		season: DataTypes.INTEGER
 	}, 
 	{
 		name : {singular: 'Temporada', plural: 'Temporadas'},

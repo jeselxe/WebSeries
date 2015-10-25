@@ -68,7 +68,16 @@ router.get('/:id', function(req, res) {
 	else {
 		models.Serie.findById(id).then(function(serie) {
 			if (serie) {
-				res.send(serie);
+				var temps;
+				models.Temporada.findAll({
+					attributes : ['id', 'season'],
+					where : {
+						SerieId : id
+					}
+				}).then(function (temporadas) {
+					serie.dataValues.temporadas = temporadas;
+					res.send(serie);
+				});
 			}
 			else {
 				res.status(404).end();
