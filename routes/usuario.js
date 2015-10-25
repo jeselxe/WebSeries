@@ -9,7 +9,10 @@ router.get('/:id/series', function(req, res) {
 	}
 	else {
 		models.Usuario.findById(id).then(function(user) {
-			return user.getSeries();
+			if(user)
+				return user.getSeries();
+			else 
+				res.status(404).end();
 		}).then(function(series) {
 			res.send(series);
 		});
@@ -48,12 +51,19 @@ router.delete('/:id', function(req, res) {
 		res.status(400).send("Error: El id no es un número");
 	}
 	else {
-		models.Usuario.destroy({
-			where: {
-				id: id
+		models.Usuario.findById(id).then(function(user){
+			if (user) {
+				models.Usuario.destroy({
+					where: {
+						id: id
+					}
+				}).then(function() {
+					res.send("Usuario Eliminado");
+				});
 			}
-		}).then(function() {
-			res.send("Usuario Eliminado");
+			else {
+				res.status(404).end();
+			}
 		});
 	}
 });

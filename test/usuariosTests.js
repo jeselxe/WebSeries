@@ -1,0 +1,98 @@
+var app = require('../app');
+var supertest = require('supertest');
+var assert = require('assert');
+
+describe('Pruebas de Usuarios', function () {
+	it('GET /:id devuelve el usuario', function (done) {
+		supertest(app)
+		.get('/api/usuario/1')
+		.expect(200)
+		.expect(function(res) {
+			assert(res.text.indexOf('Pepe') != -1);
+		})
+		.end(done);
+	});
+	
+	it('GET /:id no existe usuario', function(done) {
+		supertest(app)
+		.get('/api/usuario/0')
+		.expect(404, done);
+	});
+	
+	it('GET /:id id no numérico', function(done) {
+		supertest(app)
+		.get('/api/usuario/uno')
+		.expect(400, done);
+	});
+	
+	it('GET /:id/serie devuelve las series del usuario', function (done) {
+		supertest(app)
+		.get('/api/usuario/1/series')
+		.expect(200)
+		.expect(function(res) {
+			assert(res.text.indexOf('The Big Bang Theory') != -1);
+			assert(res.text.indexOf('Breaking Bad') != -1);
+		})
+		.end(done);
+	});
+	
+	it('GET /:id/serie no existe usuario', function(done) {
+		supertest(app)
+		.get('/api/usuario/0/series')
+		.expect(404, done);
+	});
+	
+	it('GET /:id id no numérico', function(done) {
+		supertest(app)
+		.get('/api/usuario/uno/series')
+		.expect(400, done);
+	});
+	
+	it('POST / crea nuevo usuario', function(done) {
+		supertest(app)
+		.post('/api/usuario')
+		.field('nickname', 'Jose')
+		.field('password', 'Password')
+		.expect(201, done);
+	});
+	
+	it('PUT /:id actualiza el usuario', function(done) {
+		supertest(app)
+		.put('/api/usuario/1')
+		.field('nickname', 'Juan')
+		.expect(204, done);
+	});
+	
+	it('PUT /:id no existe usuario', function(done) {
+		supertest(app)
+		.put('/api/usuario/0')
+		.field('nickname', 'Juan')
+		.expect(404, done);		
+	});
+	
+	it('PUT /:id id no numérico', function(done) {
+		supertest(app)
+		.put('/api/usuario/uno')
+		.field('nickname', 'Juan')
+		.expect(400, done);		
+	});
+	
+	it('DELETE /:id borra el usuario', function(done) {
+		supertest(app)
+		.delete('/api/usuario/1')
+		.expect(200, done);
+	});
+	
+	it('DELETE /:id no existe usuario', function(done) {
+		supertest(app)
+		.delete('/api/usuario/0')
+		.expect(404, done);
+	});
+	
+	it('DELETE /:id id no numérico', function(done) {
+		supertest(app)
+		.delete('/api/usuario/uno')
+		.expect(400, done);
+	});
+	
+})
