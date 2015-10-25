@@ -1,5 +1,7 @@
 var models  = require('../models');
 var express = require('express');
+var Sequelize = require("sequelize");
+var sequelize = new Sequelize('bd', '', '', { dialect: 'sqlite', storage: 'bd.sqlite' });
 var router  = express.Router();
 
 
@@ -17,6 +19,35 @@ router.post('/', function(req, res) {
 	}).then(function() {
 		res.status(201).send("Serie creada correctamente");
 	});
+});
+
+router.post('/:id/temporada', function(req, res) {
+	var id = req.params.id;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id no es un número");
+	}
+	else {
+		models.Serie.findById(id).then(function(serie){
+			if (serie) {
+				models.Temporada.findAll({
+					where : {
+						SerieId : serie.id	
+					},
+					attributes: { include : [[sequelize.fn('COUNT', sequelize.col('season')), 'count']] }
+				}).then(function (temporadas) {
+					models.Temporada.create({
+						SerieId: id,
+						season : temporadas[0].dataValues.count + 1
+					}).then(function() {
+						res.status(201).send("Temporada creada correctamente");
+					});
+				});
+			}
+			else {
+				res.status(404).end();
+			}
+		});
+	}
 });
 
 router.delete('/:id', function(req, res) {
@@ -68,7 +99,6 @@ router.get('/:id', function(req, res) {
 	else {
 		models.Serie.findById(id).then(function(serie) {
 			if (serie) {
-				var temps;
 				models.Temporada.findAll({
 					attributes : ['id', 'season'],
 					where : {
