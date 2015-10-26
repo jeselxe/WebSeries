@@ -50,6 +50,49 @@ router.post('/:id/temporada', function(req, res) {
 	}
 });
 
+router.delete('/:id/temporada/:season', function(req, res) {
+	var id = req.params.id;
+	var seasonId = req.params.season;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id no es un número");
+	}
+	else if (isNaN(seasonId)) {
+		res.status(400).send("Error: El id de la temporada no es un número");
+	}
+	else {
+		models.Serie.findById(id).then(function(serie){
+			if (serie) {
+				models.Temporada.findAll({
+					where : {
+						SerieId : serie.id	
+					}
+				}).then(function (temporadas) {
+					var isSeason = false;
+					console.log(temporadas);
+					temporadas.forEach(function (temporada) {
+						if(temporada.dataValues.id == seasonId) {
+							isSeason = true;
+							models.Temporada.destroy({
+								where : {
+									id :seasonId
+								}
+							}).then(function() {
+								res.send("Temporada eliminada").end();
+							});
+						}
+					});
+					if (!isSeason) {
+						res.status(404).send("La temporada no existe o no pertenece a esta serie");
+					}
+				});
+			}
+			else {
+				res.status(404).send("La serie no existe");
+			}
+		});
+	}
+});
+
 router.get('/:id/temporada/:season', function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
