@@ -19,6 +19,100 @@ router.post('/', function(req, res) {
 	});
 });
 
+router.post('/:id/temporada', function(req, res) {
+	var id = req.params.id;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id no es un número");
+	}
+	else {
+		models.Serie.findById(id).then(function(serie){
+			if (serie) {
+				serie.getTemporadas().then(function(temporadas) {
+					models.Temporada.create({
+						SerieId : id,
+						season : temporadas.length + 1
+					}).then(function() {
+						res.status(201).send("Temporada creada correctamente");
+					});
+				});
+			}
+			else {
+				res.status(404).end();
+			}
+		});
+	}
+});
+
+router.delete('/:id/temporada/:season', function(req, res) {
+	var id = req.params.id;
+	var seasonId = req.params.season;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id de la serie no es un número");
+	}
+	else if (isNaN(seasonId)) {
+		res.status(400).send("Error: El id de la temporada no es un número");
+	}
+	else { 
+		models.Serie.findById(id).then(function(serie){
+			if (serie) {
+				serie.getTemporadas().then(function(temporadas) {
+					var isSeason = false;
+					temporadas.forEach(function (temporada) {
+						if(temporada.dataValues.id == seasonId) {
+							isSeason = true;
+							models.Temporada.destroy({
+								where : {
+									id :seasonId
+								}
+							}).then(function() {
+								res.send("Temporada eliminada").end();
+							});
+						}
+					});
+					if (!isSeason) {
+						res.status(404).send("La temporada no existe o no pertenece a esta serie");
+					}
+				});
+			}
+			else {
+				res.status(404).send("La serie no existe");
+			}
+		});
+	}
+});
+
+router.get('/:id/temporada/:season', function(req, res) {
+	var id = req.params.id;
+	var seasonId = req.params.season;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id de la serie no es un número");
+	}
+	else if (isNaN(seasonId)) {
+		res.status(400).send("Error: El id de la temporada no es un número");
+	}
+	else {
+		models.Serie.findById(id).then(function(serie){
+			if (serie) {
+				serie.getTemporadas().then(function (temporadas) {
+					var isSeason = false;
+					temporadas.forEach(function (temporada) {
+						if(temporada.dataValues.id == seasonId) {
+							isSeason = true;
+							res.send(temporada);
+						}
+					});
+					if (!isSeason) {
+						res.status(404).send("La temporada no existe o no pertenece a esta serie");
+					}
+				});
+			}
+			else {
+				res.status(404).send("La serie no existe");
+			}
+		});
+	}
+});
+
 router.delete('/:id', function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
@@ -68,7 +162,15 @@ router.get('/:id', function(req, res) {
 	else {
 		models.Serie.findById(id).then(function(serie) {
 			if (serie) {
-				res.send(serie);
+				models.Temporada.findAll({
+					attributes : ['id', 'season'],
+					where : {
+						SerieId : id
+					}
+				}).then(function (temporadas) {
+					serie.dataValues.temporadas = temporadas;
+					res.send(serie);
+				});
 			}
 			else {
 				res.status(404).end();

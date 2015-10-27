@@ -8,7 +8,8 @@ module.exports = function(sequelize, DataTypes) {
 	}, {
 		classMethods: {
 			associate: function(models) {
-				Serie.belongsTo(models.Usuario)
+				Serie.belongsTo(models.Usuario);
+				Serie.hasMany(models.Temporada);
 			}
 		}
 	});
