@@ -1,7 +1,5 @@
 var models  = require('../models');
 var express = require('express');
-var Sequelize = require("sequelize");
-var sequelize = new Sequelize('bd', '', '', { dialect: 'sqlite', storage: 'bd.sqlite' });
 var router  = express.Router();
 
 
@@ -29,15 +27,10 @@ router.post('/:id/temporada', function(req, res) {
 	else {
 		models.Serie.findById(id).then(function(serie){
 			if (serie) {
-				models.Temporada.findAll({
-					where : {
-						SerieId : serie.id	
-					},
-					attributes: { include : [[sequelize.fn('COUNT', sequelize.col('season')), 'count']] }
-				}).then(function (temporadas) {
+				serie.getTemporadas().then(function(temporadas) {
 					models.Temporada.create({
-						SerieId: id,
-						season : temporadas[0].dataValues.count + 1
+						SerieId : id,
+						season : temporadas.length + 1
 					}).then(function() {
 						res.status(201).send("Temporada creada correctamente");
 					});
@@ -59,16 +52,11 @@ router.delete('/:id/temporada/:season', function(req, res) {
 	else if (isNaN(seasonId)) {
 		res.status(400).send("Error: El id de la temporada no es un número");
 	}
-	else {
+	else { 
 		models.Serie.findById(id).then(function(serie){
 			if (serie) {
-				models.Temporada.findAll({
-					where : {
-						SerieId : serie.id	
-					}
-				}).then(function (temporadas) {
+				serie.getTemporadas().then(function(temporadas) {
 					var isSeason = false;
-					console.log(temporadas);
 					temporadas.forEach(function (temporada) {
 						if(temporada.dataValues.id == seasonId) {
 							isSeason = true;
@@ -105,15 +93,11 @@ router.get('/:id/temporada/:season', function(req, res) {
 	else {
 		models.Serie.findById(id).then(function(serie){
 			if (serie) {
-				models.Temporada.findAll({
-					where : {
-						SerieId : serie.id	
-					}
-				}).then(function (temporadas) {
+				serie.getTemporadas().then(function (temporadas) {
 					var isSeason = false;
-					console.log(temporadas);
 					temporadas.forEach(function (temporada) {
 						if(temporada.dataValues.id == seasonId) {
+							isSeason = true;
 							res.send(temporada);
 						}
 					});
