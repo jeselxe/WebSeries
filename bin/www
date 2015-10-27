@@ -14,25 +14,82 @@ models.sequelize.sync({force: true}).then(function(){
 	return models.Serie.create({title: 'The Big Bang Theory', description: 'descripción de la serie The Big Bang Theory', UsuarioId: usuario.id});
 }).then(function(serie) {
 	return models.Temporada.bulkCreate([
-		{season: 1, SerieId: serie.id},
-		{season: 2, SerieId: serie.id},
-		{season: 3, SerieId: serie.id},
-		{season: 4, SerieId: serie.id},
-		{season: 5, SerieId: serie.id},
-		{season: 6, SerieId: serie.id},
-		{season: 7, SerieId: serie.id},
-		{season: 8, SerieId: serie.id},
-		{season: 9, SerieId: serie.id}
+		{id: 1, season: 1, SerieId: serie.id},
+		{id: 2, season: 2, SerieId: serie.id},
+		{id: 3, season: 3, SerieId: serie.id},
+		{id: 4, season: 4, SerieId: serie.id},
+		{id: 5, season: 5, SerieId: serie.id},
+		{id: 6, season: 6, SerieId: serie.id},
+		{id: 7, season: 7, SerieId: serie.id},
+		{id: 8, season: 8, SerieId: serie.id},
+		{id: 9, season: 9, SerieId: serie.id}
 	]);
 }).then(function() {
+	return models.Capitulo.bulkCreate([
+		{title: 'Capitulo 1', TemporadaId: 1},
+		{title: 'Capitulo 2', TemporadaId: 1},
+		{title: 'Capitulo 3', TemporadaId: 1},
+		{title: 'Capitulo 4', TemporadaId: 1},
+		{title: 'Capitulo 1', TemporadaId: 2},
+		{title: 'Capitulo 2', TemporadaId: 2},
+		{title: 'Capitulo 1', TemporadaId: 3},
+		{title: 'Capitulo 2', TemporadaId: 4},
+		{title: 'Capitulo 3', TemporadaId: 4},
+		{title: 'Capitulo 1', TemporadaId: 5},
+		{title: 'Capitulo 2', TemporadaId: 5},
+		{title: 'Capitulo 3', TemporadaId: 5},
+		{title: 'Capitulo 4', TemporadaId: 5},
+		{title: 'Capitulo 5', TemporadaId: 5},
+		{title: 'Capitulo 1', TemporadaId: 6},
+		{title: 'Capitulo 2', TemporadaId: 6},
+		{title: 'Capitulo 3', TemporadaId: 6},
+		{title: 'Capitulo 1', TemporadaId: 7},
+		{title: 'Capitulo 2', TemporadaId: 7},
+		{title: 'Capitulo 3', TemporadaId: 7},
+		{title: 'Capitulo 1', TemporadaId: 8},
+		{title: 'Capitulo 2', TemporadaId: 8},
+		{title: 'Capitulo 1', TemporadaId: 9},
+		{title: 'Capitulo 2', TemporadaId: 9},
+		{title: 'Capitulo 3', TemporadaId: 9}
+	]);
+})
+.then(function() {
 	return models.Serie.create({title: 'Breaking Bad', description: 'descripción de la serie Breaking Bad', UsuarioId: userId});
 }).then(function(serie) {
 	return models.Temporada.bulkCreate([
-		{season: 1, SerieId: serie.id},
-		{season: 2, SerieId: serie.id},
-		{season: 3, SerieId: serie.id},
-		{season: 4, SerieId: serie.id},
-		{season: 5, SerieId: serie.id}
+		{id: 10, season: 1, SerieId: serie.id},
+		{id: 11, season: 2, SerieId: serie.id},
+		{id: 12, season: 3, SerieId: serie.id},
+		{id: 13, season: 4, SerieId: serie.id},
+		{id: 14, season: 5, SerieId: serie.id}
+	]);
+}).then(function () {
+	return models.Capitulo.bulkCreate([
+		{title: 'Capitulo 1', TemporadaId: 10},
+		{title: 'Capitulo 2', TemporadaId: 10},
+		{title: 'Capitulo 3', TemporadaId: 10},
+		{title: 'Capitulo 4', TemporadaId: 10},
+		{title: 'Capitulo 5', TemporadaId: 10},
+		{title: 'Capitulo 1', TemporadaId: 11},
+		{title: 'Capitulo 2', TemporadaId: 11},
+		{title: 'Capitulo 3', TemporadaId: 11},
+		{title: 'Capitulo 4', TemporadaId: 11},
+		{title: 'Capitulo 5', TemporadaId: 11},
+		{title: 'Capitulo 1', TemporadaId: 12},
+		{title: 'Capitulo 2', TemporadaId: 12},
+		{title: 'Capitulo 3', TemporadaId: 12},
+		{title: 'Capitulo 4', TemporadaId: 12},
+		{title: 'Capitulo 5', TemporadaId: 12},
+		{title: 'Capitulo 1', TemporadaId: 13},
+		{title: 'Capitulo 2', TemporadaId: 13},
+		{title: 'Capitulo 3', TemporadaId: 13},
+		{title: 'Capitulo 4', TemporadaId: 13},
+		{title: 'Capitulo 5', TemporadaId: 13},
+		{title: 'Capitulo 1', TemporadaId: 14},
+		{title: 'Capitulo 2', TemporadaId: 14},
+		{title: 'Capitulo 3', TemporadaId: 14},
+		{title: 'Capitulo 4', TemporadaId: 14},
+		{title: 'Capitulo 5', TemporadaId: 14}
 	]);
 })
 .then(function(){
