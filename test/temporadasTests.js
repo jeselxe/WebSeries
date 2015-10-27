@@ -34,4 +34,25 @@ describe('Pruebas de Temporadas', function () {
 		})
 		.end(done);
 	});
+	
+	it('POST /:id/temporada id no numérico', function(done) {
+		supertest(app)
+		.post('/api/series/uno/temporada')
+		.expect(400)
+		.expect("Error: El id no es un número", done);
+	});
+	
+	it('POST /:id/temporada ', function(done) {
+		supertest(app)
+		.post('/api/series/0/temporada')
+		.expect(404, done);
+	});
+	
+	it('POST /:id/temporada añade nueva temporada', function(done) {
+		supertest(app)
+		.post('/api/series/1/temporada')
+		.expect(201)
+		.expect("Temporada creada correctamente", done);
+	});
+	
 });
