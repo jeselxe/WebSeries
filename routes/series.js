@@ -182,6 +182,41 @@ router.get('/:id/temporada/:season', function(req, res) {
 	}
 });
 
-
+router.post('/:id/temporada/:season/capitulo', function(req, res) {
+	var id = req.params.id;
+	var seasonId = req.params.season;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id de la serie no es un número");
+	}
+	else if (isNaN(seasonId)) {
+		res.status(400).send("Error: El id de la temporada no es un número");
+	}
+	else {
+		models.Serie.findById(id).then(function(serie){
+			if (serie) {
+				serie.getTemporadas().then(function (temporadas) {
+					var isSeason = false;
+					temporadas.forEach(function (temporada) {
+						if(temporada.dataValues.id == seasonId) {
+							isSeason = true;
+							models.Capitulo.create({
+								title : req.body.title,
+								TemporadaId : seasonId
+							}).then(function () {
+								res.status(201).send("Capítulo creado correctamente");
+							});
+						}
+					});
+					if (!isSeason) {
+						res.status(404).send("La temporada no existe o no pertenece a esta serie");
+					}
+				});
+			}
+			else {
+				res.status(404).send("La serie no existe");
+			}
+		});
+	}
+});
 
 module.exports = router;
