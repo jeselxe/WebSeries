@@ -2,7 +2,7 @@
 
 module.exports = function(sequelize, DataTypes) {
 	
-	var Capitulo = sequelize.define('Temporada', {
+	var Capitulo = sequelize.define('Capitulo', {
 		title: DataTypes.STRING
 	}, 
 	{
