@@ -55,4 +55,38 @@ describe('Pruebas de Temporadas', function () {
 		.expect("Temporada creada correctamente", done);
 	});
 	
+	it('DELETE /:id/temporada/:season id no numérico', function(done) {
+		supertest(app)
+		.delete('/api/series/uno/temporada/1')
+		.expect(400)
+		.expect("Error: El id de la serie no es un número", done);
+	});
+	
+	it('DELETE /:id/temporada/:season season no numérico', function(done) {
+		supertest(app)
+		.delete('/api/series/1/temporada/uno')
+		.expect(400)
+		.expect("Error: El id de la temporada no es un número", done);
+	});
+	
+	it('DELETE /:id/temporada/:season la temporada no pertenece a la serie', function(done) {
+		supertest(app)
+		.delete('/api/series/1/temporada/13')
+		.expect(404)
+		.expect("La temporada no existe o no pertenece a esta serie", done);
+	});
+	
+	it('DELETE /:id/temporada/:season la serie no existe', function(done) {
+		supertest(app)
+		.delete('/api/series/0/temporada/1')
+		.expect(404)
+		.expect("La serie no existe", done);
+	});
+	
+	it('DELETE /:id/temporada/:season borra temporada', function(done) {
+		supertest(app)
+		.delete('/api/series/1/temporada/1')
+		.expect(200, done);
+	});
+	
 });

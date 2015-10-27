@@ -47,7 +47,7 @@ router.delete('/:id/temporada/:season', function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	if (isNaN(id)) {
-		res.status(400).send("Error: El id no es un número");
+		res.status(400).send("Error: El id de la serie no es un número");
 	}
 	else if (isNaN(seasonId)) {
 		res.status(400).send("Error: El id de la temporada no es un número");
