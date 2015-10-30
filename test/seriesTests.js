@@ -34,4 +34,12 @@ describe('Pruebas de Series', function () {
 		.end(done);
 	});
 	
+	it('POST / ', function (done) {
+		supertest(app)
+		.post('/api/series')
+		.send({title : 'Padre de Familia', description : 'descripción de la serie Padre de Familia', user : 1})
+		.expect(201)
+		.expect("Serie creada correctamente", done);
+	});
+	
 });
