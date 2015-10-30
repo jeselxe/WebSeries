@@ -54,7 +54,7 @@ router.put('/:id', function(req, res) {
 				});
 			}
 			else {
-				res.status(404).end();
+				res.status(404).send("La serie no existe");
 			}
 		});
 	}
@@ -79,7 +79,7 @@ router.get('/:id', function(req, res) {
 				});
 			}
 			else {
-				res.status(404).end();
+				res.status(404).send("La serie no existe");
 			}
 		});
 	}

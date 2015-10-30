@@ -21,6 +21,13 @@ describe('Pruebas de Series', function () {
 		.expect(400)
 		.expect("Error: El id no es un número", done);
 	});
+
+	it('GET /:id la serie no existe', function (done) {
+		supertest(app)
+		.get('/api/series/0')
+		.expect(404)
+		.expect("La serie no existe", done);
+	});
 	
 	it('GET /:id devuelve la serie', function (done) {
 		supertest(app)
