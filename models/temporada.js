@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
 		classMethods : {
 			associate: function(models) {
 				Temporada.belongsTo(models.Serie);
+				Temporada.hasMany(models.Capitulo);
 			}
 		}
 	});
