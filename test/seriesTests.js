@@ -14,5 +14,24 @@ describe('Pruebas de Series', function () {
 		})
 		.end(done);
 	});
+			
+	it('GET /:id id no numérico', function (done) {
+		supertest(app)
+		.get('/api/series/uno')
+		.expect(400)
+		.expect("Error: El id no es un número", done);
+	});
+	
+	it('GET /:id devuelve la serie', function (done) {
+		supertest(app)
+		.get('/api/series/1')
+		.expect(200)
+		.expect(function (req) {
+			assert.equal("The Big Bang Theory", req.body.title);
+			assert.equal("descripción de la serie The Big Bang Theory", req.body.description);
+			assert.equal(9, req.body.temporadas.length);
+		})
+		.end(done);
+	});
 	
 });
