@@ -72,4 +72,25 @@ describe('Pruebas de Series', function () {
 		.expect("Error: El id no es un número", done);		
 	});
 	
+	it('DELETE /:id elimina la serie', function(done) {
+		supertest(app)
+		.delete('/api/series/1')
+		.expect(200)
+		.expect("serie Eliminada", done);
+	});
+	
+	it('DELETE /:id no existe la serie', function(done) {
+		supertest(app)
+		.delete('/api/series/0')
+		.expect(404)
+		.expect("La serie no existe", done);		
+	});
+	
+	it('DELETE /:id id no numérico', function(done) {
+		supertest(app)
+		.delete('/api/series/uno')
+		.expect(400)
+		.expect("Error: El id no es un número", done);		
+	});
+	
 });

@@ -25,12 +25,19 @@ router.delete('/:id', function(req, res) {
 		res.status(400).send("Error: El id no es un número");
 	}
 	else {
-		models.Serie.destroy({
-			where: {
-				id: id
+		models.Serie.findById(id).then(function(serie){
+			if (serie) {
+				models.Serie.destroy({
+					where: {
+						id: id
+					}
+				}).then(function() {
+					res.send("serie Eliminada");
+				});
 			}
-		}).then(function() {
-			res.send("serie Eliminada");
+			else {
+				res.status(404).send("La serie no existe");
+			}
 		});
 	}
 });
