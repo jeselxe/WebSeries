@@ -28,10 +28,6 @@ describe('Pruebas de Temporadas', function () {
 		supertest(app)
 		.get('/api/series/1/temporada/1')
 		.expect(200)
-		.expect(function(res) {
-			assert(res.text.indexOf('"id":1') != -1);
-			assert(res.text.indexOf('"season":1') != -1);
-		})
 		.end(done);
 	});
 	
@@ -42,10 +38,11 @@ describe('Pruebas de Temporadas', function () {
 		.expect("Error: El id no es un número", done);
 	});
 	
-	it('POST /:id/temporada ', function(done) {
+	it('POST /:id/temporada serie no existe', function(done) {
 		supertest(app)
 		.post('/api/series/0/temporada')
-		.expect(404, done);
+		.expect(404)
+		.expect("La serie no existe", done);
 	});
 	
 	it('POST /:id/temporada añade nueva temporada', function(done) {
