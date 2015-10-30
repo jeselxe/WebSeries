@@ -49,4 +49,27 @@ describe('Pruebas de Series', function () {
 		.expect("Serie creada correctamente", done);
 	});
 	
+	it('PUT /:id actualiza la serie', function(done) {
+		supertest(app)
+		.put('/api/series/1')
+		.send({ description : "Descripción de la serie The Big Bang Theory"})
+		.expect(204, done);
+	});
+	
+	it('PUT /:id no existe la serie', function(done) {
+		supertest(app)
+		.put('/api/series/0')
+		.send({ description : "Descripción de la serie The Big Bang Theory"})
+		.expect(404)
+		.expect("La serie no existe", done);		
+	});
+	
+	it('PUT /:id id no numérico', function(done) {
+		supertest(app)
+		.put('/api/series/uno')
+		.send({ description : "Descripción de la serie The Big Bang Theory"})
+		.expect(400)
+		.expect("Error: El id no es un número", done);		
+	});
+	
 });
