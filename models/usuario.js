@@ -9,7 +9,8 @@ module.exports = function(sequelize, DataTypes) {
 		name: {singular: 'Usuario', plural: 'Usuarios'},
 		classMethods: {
 			associate: function(models){
-				Usuario.hasMany(models.Serie)
+				Usuario.hasMany(models.Serie);
+				Usuario.hasMany(models.Comentario);
 			}
 		}
 	});
