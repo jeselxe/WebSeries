@@ -153,7 +153,31 @@ models.sequelize.sync({force: true}).then(function(){
 		{comment : 'Comentario 57', UsuarioId : 1, CapituloId: 47},
 		{comment : 'Comentario 58', UsuarioId : 1, CapituloId: 48},
 		{comment : 'Comentario 59', UsuarioId : 1, CapituloId: 49},
-		{comment : 'Comentario 60', UsuarioId : 1, CapituloId: 50},
+		{comment : 'Comentario 60', UsuarioId : 1, CapituloId: 50}
+	]);
+})
+.then(function () {
+	return models.Comentario.bulkCreate([
+		{comment : 'Comentario a serie 1', UsuarioId : 1, SerieId: 1},
+		{comment : 'Comentario a serie 2', UsuarioId : 1, SerieId: 1},
+		{comment : 'Comentario a serie 3', UsuarioId : 1, SerieId: 1},
+		{comment : 'Comentario a serie 4', UsuarioId : 1, SerieId: 1},
+		{comment : 'Comentario a serie 5', UsuarioId : 1, SerieId: 1},
+		{comment : 'Comentario a serie 6', UsuarioId : 1, SerieId: 1},
+		{comment : 'Comentario a serie 7', UsuarioId : 1, SerieId: 1},
+		{comment : 'Comentario a serie 8', UsuarioId : 1, SerieId: 1},
+		{comment : 'Comentario a serie 9', UsuarioId : 1, SerieId: 1},
+		{comment : 'Comentario a serie 10', UsuarioId : 1, SerieId: 1},
+		{comment : 'Comentario a serie 11', UsuarioId : 1, SerieId: 2},
+		{comment : 'Comentario a serie 12', UsuarioId : 1, SerieId: 2},
+		{comment : 'Comentario a serie 13', UsuarioId : 1, SerieId: 2},
+		{comment : 'Comentario a serie 14', UsuarioId : 1, SerieId: 2},
+		{comment : 'Comentario a serie 15', UsuarioId : 1, SerieId: 2},
+		{comment : 'Comentario a serie 16', UsuarioId : 1, SerieId: 2},
+		{comment : 'Comentario a serie 17', UsuarioId : 1, SerieId: 2},
+		{comment : 'Comentario a serie 18', UsuarioId : 1, SerieId: 2},
+		{comment : 'Comentario a serie 19', UsuarioId : 1, SerieId: 2},
+		{comment : 'Comentario a serie 20', UsuarioId : 1, SerieId: 2}
 	]);
 })
 .then(function(){
