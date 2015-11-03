@@ -428,4 +428,70 @@ router.post('/:id/temporada/:season/capitulo/:episode/comentario', function(req,
 	}
 });
 
+router.delete('/:id/temporada/:season/capitulo/:episode/comentario/:comment', function(req, res) {
+	var id = req.params.id;
+	var seasonId = req.params.season;
+	var episodeId = req.params.episode;
+	var commentId = req.params.comment;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id de la serie no es un número");
+	}
+	else if (isNaN(seasonId)) {
+		res.status(400).send("Error: El id de la temporada no es un número");
+	}
+	else if (isNaN(episodeId)) {
+		res.status(400).send("Error: El id del capitulo no es un número");
+	}
+	else if (isNaN(commentId)) {
+		res.status(400).send("Error: El id del comentario no es un número");
+	}
+	else {
+		models.Serie.findById(id).then(function(serie){
+			if (serie) {
+				serie.getTemporadas().then(function (temporadas) {
+					var isSeason = false;
+					temporadas.forEach(function (temporada) {
+						if(temporada.dataValues.id == seasonId) {
+							isSeason = true;
+							temporada.getCapitulos().then(function (capitulos) {
+								var isEpisode = false;
+								capitulos.forEach(function (capitulo) {
+									if(capitulo.dataValues.id == episodeId) {
+										isEpisode = true;
+										capitulo.getComentarios().then(function (comentarios) {
+											var isComment = false;
+											comentarios.forEach(function(comentario) {
+												if(comentario.dataValues.id == commentId) {
+													isComment = true;
+													models.Comentario.destroy({
+														where: {
+															id : commentId
+														}
+													}).then(function () {
+														res.send("Comentario eliminado").end();
+													})
+												}
+											});
+											if(!isComment)
+												res.status(404).send("El comentario no existe o no pertenece a este capítulo");
+										});
+									}
+								});
+								if(!isEpisode)
+									res.status(404).send("El capítulo no existe o no pertenece a esta temporada");
+							});
+						}
+					});
+					if (!isSeason) {
+						res.status(404).send("La temporada no existe o no pertenece a esta serie");
+					}
+				});
+			}
+			else {
+				res.status(404).send("La serie no existe");
+			}
+		});
+	}
+});
+
 module.exports = router;
