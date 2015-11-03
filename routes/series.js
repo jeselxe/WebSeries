@@ -103,6 +103,29 @@ router.get('/:id', function(req, res) {
 });
 
 
+router.post('/:id/comentario', function(req, res) {
+	var id = req.params.id;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id no es un número");
+	}
+	else {
+		models.Serie.findById(id).then(function(serie){
+			if (serie) {
+				models.Comentario.create({
+					SerieId : id,
+					UsuarioId : req.body.user,
+					comment : req.body.comment
+				}).then(function() {
+					res.status(201).send("Comentario creado correctamente");
+				});
+			}
+			else {
+				res.status(404).send("La serie no existe");
+			}
+		});
+	}
+});
+
 router.post('/:id/temporada', function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
