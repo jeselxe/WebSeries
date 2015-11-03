@@ -82,7 +82,17 @@ router.get('/:id', function(req, res) {
 					}
 				}).then(function (temporadas) {
 					serie.dataValues.temporadas = temporadas;
-					res.send(serie);
+					
+					models.Comentario.findAll({
+						attributes : ['id', 'comment', 'createdAt', 'UsuarioId'],
+						where : {
+							SerieId : id
+						}
+					}).then(function (comentarios) {
+						serie.dataValues.comentarios = comentarios;
+						
+						res.send(serie);
+					});
 				});
 			}
 			else {
@@ -354,7 +364,7 @@ router.get('/:id/temporada/:season/capitulo/:episode', function(req, res) {
 								capitulos.forEach(function (capitulo) {
 									if(capitulo.dataValues.id == episodeId) {
 										isEpisode = true;
-										capitulo.getComentarios().then(function (comentarios) {
+										capitulo.getComentarios({ attributes : ["id", "comment", "createdAt", "updatedAt", 'UsuarioId']}).then(function (comentarios) {
 											res.send(comentarios);
 										});
 									}

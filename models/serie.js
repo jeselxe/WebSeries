@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
 			associate: function(models) {
 				Serie.belongsTo(models.Usuario);
 				Serie.hasMany(models.Temporada);
+				Serie.hasMany(models.Comentario);
 			}
 		}
 	});

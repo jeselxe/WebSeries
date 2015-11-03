@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
 			associate: function(models) {
 				Comentario.belongsTo(models.Usuario);
 				Comentario.belongsTo(models.Capitulo);
+				Comentario.belongsTo(models.Serie);
 			}
 		}
 	});
