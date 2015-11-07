@@ -353,7 +353,7 @@ router.delete('/:id/temporada/:season/capitulo/:episode', function(req, res) {
 		res.status(400).send("Error: El id de la temporada no es un número");
 	}
 	else if (isNaN(episodeId)) {
-		res.status(400).send("Error: El id del capitulo no es un número");
+		res.status(400).send("Error: El id del capítulo no es un número");
 	}
 	else {
 		models.Serie.findById(id).then(function(serie){
@@ -405,7 +405,7 @@ router.put('/:id/temporada/:season/capitulo/:episode', function(req, res) {
 		res.status(400).send("Error: El id de la temporada no es un número");
 	}
 	else if (isNaN(episodeId)) {
-		res.status(400).send("Error: El id del capitulo no es un número");
+		res.status(400).send("Error: El id del capítulo no es un número");
 	}
 	else {
 		models.Serie.findById(id).then(function(serie){
@@ -455,7 +455,7 @@ router.get('/:id/temporada/:season/capitulo/:episode', function(req, res) {
 		res.status(400).send("Error: El id de la temporada no es un número");
 	}
 	else if (isNaN(episodeId)) {
-		res.status(400).send("Error: El id del capitulo no es un número");
+		res.status(400).send("Error: El id del capítulo no es un número");
 	}
 	else {
 		models.Serie.findById(id).then(function(serie){
@@ -503,7 +503,7 @@ router.post('/:id/temporada/:season/capitulo/:episode/comentario', function(req,
 		res.status(400).send("Error: El id de la temporada no es un número");
 	}
 	else if (isNaN(episodeId)) {
-		res.status(400).send("Error: El id del capitulo no es un número");
+		res.status(400).send("Error: El id del capítulo no es un número");
 	}
 	else {
 		models.Serie.findById(id).then(function(serie){
@@ -556,7 +556,7 @@ router.delete('/:id/temporada/:season/capitulo/:episode/comentario/:comment', fu
 		res.status(400).send("Error: El id de la temporada no es un número");
 	}
 	else if (isNaN(episodeId)) {
-		res.status(400).send("Error: El id del capitulo no es un número");
+		res.status(400).send("Error: El id del capítulo no es un número");
 	}
 	else if (isNaN(commentId)) {
 		res.status(400).send("Error: El id del comentario no es un número");
@@ -622,7 +622,7 @@ router.put('/:id/temporada/:season/capitulo/:episode/comentario/:comment', funct
 		res.status(400).send("Error: El id de la temporada no es un número");
 	}
 	else if (isNaN(episodeId)) {
-		res.status(400).send("Error: El id del capitulo no es un número");
+		res.status(400).send("Error: El id del capítulo no es un número");
 	}
 	else if (isNaN(commentId)) {
 		res.status(400).send("Error: El id del comentario no es un número");

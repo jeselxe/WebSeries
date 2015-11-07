@@ -2,7 +2,7 @@ var app = require('../app');
 var supertest = require('supertest');
 var assert = require('assert');
 
-describe('Pruebas de Temporadas', function () {
+describe('Pruebas de Capítulos', function () {
 	
 	it('GET /:id/temporada/:season devuelve los capítulos de la temporada', function(done) {
 		supertest(app)
@@ -15,6 +15,13 @@ describe('Pruebas de Temporadas', function () {
 			assert(res.text.indexOf('Capitulo 4') != -1);
 		})
 		.end(done);
+	});
+	
+	it('GET /:id/temporada/:season/capitulo/:episode id episodio no es numérico', function(done) {
+		supertest(app)
+		.get('/api/series/1/temporada/1/capitulo/uno')
+		.expect(400)
+		.expect("Error: El id del capítulo no es un número", done);
 	});
 	
 	it('POST /:id/temporada/:season/capitulo id no numérico', function(done) {
@@ -75,7 +82,7 @@ describe('Pruebas de Temporadas', function () {
 		supertest(app)
 		.delete('/api/series/1/temporada/1/capitulo/uno')
 		.expect(400)
-		.expect("Error: El id del capitulo no es un número", done);
+		.expect("Error: El id del capítulo no es un número", done);
 	});
 	
 	it('DELETE /:id/temporada/:season/capitulo/:episode la temporada no pertenece a la serie', function(done) {
