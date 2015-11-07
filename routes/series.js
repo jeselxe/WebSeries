@@ -143,6 +143,49 @@ router.put('/:id/comentario/:comment', function(req, res) {
 	}
 });
 
+router.delete('/:id/comentario/:comment', function(req, res) {
+	var id = req.params.id;
+	var commentId = req.params.comment;
+	if (isNaN(id)) {
+		res.status(400).send("Error: El id de la serie no es un número");
+	}
+	if (isNaN(commentId)) {
+		res.status(400).send("Error: El id del comentario no es un número");
+	}
+	else {
+		models.Serie.findById(id).then(function(serie){
+			if (serie) {
+				serie.getComentarios().then(function (comentarios) {
+					var isComentario = false;
+					comentarios.forEach(function(comentario) {
+						if (comentario.dataValues.id == commentId) {
+							isComentario = true;
+							models.Comentario.destroy({
+								where: {
+									id: commentId
+								}
+							}).then(function() {
+								res.status(204).end();
+							});
+						}
+					});
+					if (!isComentario) {
+						res.status(404).send("El comentario no existe o no pertenece a esta serie");
+					}
+				})
+				serie.update({
+					comment : req.body.comment
+				}).then(function() {
+					res.status(204);
+				});
+			}
+			else {
+				res.status(404).send("La serie no existe");
+			}
+		});
+	}
+});
+
 router.post('/:id/comentario', function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
