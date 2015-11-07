@@ -23,4 +23,20 @@ describe('Pruebas de Comentarios', function () {
 		.end(done);
 	});
 	
+	it('POST /:id/temporada/:season/capitulo/:episode añade nuevo comentario al capítulo', function(done) {
+		supertest(app)
+		.post('/api/series/1/temporada/1/capitulo/1/comentario')
+		.send({comment : 'Nuevo comentario', user: 1})
+		.expect(201)
+		.expect("Comentario creado correctamente", done);
+	});
+	
+	it('POST /:id/capitulo/:episode añade nuevo comentario a la serie', function(done) {
+		supertest(app)
+		.post('/api/series/1/comentario')
+		.send({comment : 'Nuevo comentario', user: 1})
+		.expect(201)
+		.expect("Comentario creado correctamente", done);
+	});
+	
 });
