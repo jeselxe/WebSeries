@@ -165,18 +165,13 @@ router.delete('/:id/comentario/:comment', function(req, res) {
 									id: commentId
 								}
 							}).then(function() {
-								res.status(204).end();
+								res.send("Comentario eliminado").end();
 							});
 						}
 					});
 					if (!isComentario) {
 						res.status(404).send("El comentario no existe o no pertenece a esta serie");
 					}
-				})
-				serie.update({
-					comment : req.body.comment
-				}).then(function() {
-					res.status(204);
 				});
 			}
 			else {

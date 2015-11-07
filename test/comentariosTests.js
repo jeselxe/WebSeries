@@ -69,5 +69,32 @@ describe('Pruebas de Comentarios', function () {
 		.expect("Error: El id del comentario no es un número", done);
 	});
 	
+	it('DELETE /:id/temporada/:season/capitulo/:episode/comentario/:comment borra comentario de capítulo', function(done) {
+		supertest(app)
+		.delete('/api/series/1/temporada/1/capitulo/1/comentario/1')
+		.expect(200)
+		.expect("Comentario eliminado", done);
+	});
+	
+	it('DELETE /:id/comentario/:comment borra comentario de la serie', function(done) {
+		supertest(app)
+		.delete('/api/series/1/comentario/61')
+		.expect(200)
+		.expect("Comentario eliminado", done);
+	});
+	
+	it('DELETE /:id/temporada/:season/capitulo/:episode/comentario/:comment comment no numérico', function(done) {
+		supertest(app)
+		.delete('/api/series/1/temporada/1/capitulo/1/comentario/uno')
+		.expect(400)
+		.expect("Error: El id del comentario no es un número", done);
+	});
+	
+	it('DELETE /:id/comentario/:comment comment no numérico', function(done) {
+		supertest(app)
+		.delete('/api/series/1/comentario/uno')
+		.expect(400)
+		.expect("Error: El id del comentario no es un número", done);
+	});
 	
 });
