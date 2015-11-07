@@ -46,7 +46,11 @@ router.post('/', function(req, res) {
 	});
 });
 
-router.delete('/:id', auth, function(req, res) {
+router.post('/login', auth.login, function(req, res) {
+	res.end();
+});
+
+router.delete('/:id', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
 		res.status(400).send("Error: El id no es un número");
@@ -69,7 +73,7 @@ router.delete('/:id', auth, function(req, res) {
 	}
 });
 
-router.put('/:id', auth, function(req, res) {
+router.put('/:id', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
 		res.status(400).send("Error: El id no es un número");
