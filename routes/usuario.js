@@ -1,5 +1,6 @@
 var models  = require('../models');
 var express = require('express');
+var auth = require('../auth');
 var router  = express.Router();
 
 router.get('/:id/series', function(req, res) {
