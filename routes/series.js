@@ -1,5 +1,6 @@
 var models  = require('../models');
 var express = require('express');
+var auth = require('../auth');
 var router  = express.Router();
 
 
@@ -9,7 +10,7 @@ router.get('/', function(req, res) {
 	});
 });
 
-router.post('/', function(req, res) {	
+router.post('/', auth, function(req, res) {	
 	models.Serie.create({
 		title: req.body.title,
 		description: req.body.description,
@@ -19,7 +20,7 @@ router.post('/', function(req, res) {
 	});
 });
 
-router.delete('/:id', function(req, res) {
+router.delete('/:id', auth, function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
 		res.status(400).send("Error: El id no es un número");
@@ -42,7 +43,7 @@ router.delete('/:id', function(req, res) {
 	}
 });
 
-router.put('/:id', function(req, res) {
+router.put('/:id', auth, function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
 		res.status(400).send("Error: El id no es un número");
@@ -102,7 +103,7 @@ router.get('/:id', function(req, res) {
 	}
 });
 
-router.put('/:id/comentario/:comment', function(req, res) {
+router.put('/:id/comentario/:comment', auth, function(req, res) {
 	var id = req.params.id;
 	var commentId = req.params.comment;
 	if (isNaN(id)) {
@@ -143,7 +144,7 @@ router.put('/:id/comentario/:comment', function(req, res) {
 	}
 });
 
-router.delete('/:id/comentario/:comment', function(req, res) {
+router.delete('/:id/comentario/:comment', auth, function(req, res) {
 	var id = req.params.id;
 	var commentId = req.params.comment;
 	if (isNaN(id)) {
@@ -181,7 +182,7 @@ router.delete('/:id/comentario/:comment', function(req, res) {
 	}
 });
 
-router.post('/:id/comentario', function(req, res) {
+router.post('/:id/comentario', auth, function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
 		res.status(400).send("Error: El id no es un número");
@@ -204,7 +205,7 @@ router.post('/:id/comentario', function(req, res) {
 	}
 });
 
-router.post('/:id/temporada', function(req, res) {
+router.post('/:id/temporada', auth, function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
 		res.status(400).send("Error: El id no es un número");
@@ -228,7 +229,7 @@ router.post('/:id/temporada', function(req, res) {
 	}
 });
 
-router.delete('/:id/temporada/:season', function(req, res) {
+router.delete('/:id/temporada/:season', auth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	if (isNaN(id)) {
@@ -300,7 +301,7 @@ router.get('/:id/temporada/:season', function(req, res) {
 	}
 });
 
-router.post('/:id/temporada/:season/capitulo', function(req, res) {
+router.post('/:id/temporada/:season/capitulo', auth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	if (isNaN(id)) {
@@ -337,7 +338,7 @@ router.post('/:id/temporada/:season/capitulo', function(req, res) {
 	}
 });
 
-router.delete('/:id/temporada/:season/capitulo/:episode', function(req, res) {
+router.delete('/:id/temporada/:season/capitulo/:episode', auth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	var episodeId = req.params.episode;
@@ -389,7 +390,7 @@ router.delete('/:id/temporada/:season/capitulo/:episode', function(req, res) {
 	}
 });
 
-router.put('/:id/temporada/:season/capitulo/:episode', function(req, res) {
+router.put('/:id/temporada/:season/capitulo/:episode', auth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	var episodeId = req.params.episode;
@@ -487,7 +488,7 @@ router.get('/:id/temporada/:season/capitulo/:episode', function(req, res) {
 	}
 });
 
-router.post('/:id/temporada/:season/capitulo/:episode/comentario', function(req, res) {
+router.post('/:id/temporada/:season/capitulo/:episode/comentario', auth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	var episodeId = req.params.episode;
@@ -539,7 +540,7 @@ router.post('/:id/temporada/:season/capitulo/:episode/comentario', function(req,
 	}
 });
 
-router.delete('/:id/temporada/:season/capitulo/:episode/comentario/:comment', function(req, res) {
+router.delete('/:id/temporada/:season/capitulo/:episode/comentario/:comment', auth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	var episodeId = req.params.episode;
@@ -605,7 +606,7 @@ router.delete('/:id/temporada/:season/capitulo/:episode/comentario/:comment', fu
 	}
 });
 
-router.put('/:id/temporada/:season/capitulo/:episode/comentario/:comment', function(req, res) {
+router.put('/:id/temporada/:season/capitulo/:episode/comentario/:comment', auth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	var episodeId = req.params.episode;
