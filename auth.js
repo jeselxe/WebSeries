@@ -20,7 +20,7 @@ function generateToken(payload) {
 }
 
 function desencriptarBase64(basic) {
-	var credentials = new Buffer(basic.split(' ')[1], 'base64').toString('utf8').split(":");
+	var credentials = new Buffer(basic, 'base64').toString('utf8').split(":");
 	var user = {
 		nickname: credentials[0],
 		password: credentials[1]
@@ -48,7 +48,7 @@ function getUserByToken(token) {
 
 function getUserByBasicAuthorization(basic) {
 	var user = desencriptarBase64(basic);
-		
+	console.log('getUserByBasicAuth');
 	return models.Usuario.find({
 		where: {
 			nickname: user.nickname,
@@ -62,7 +62,13 @@ function getUserAuthorized(req) {
 		return getUserByToken(req.query.access_token);
 	}
 	else if (req.headers.authorization){
-		return getUserByBasicAuthorization(req.headers.authorization);
+		var auth = req.headers.authorization.split(' ');
+		if (auth[0] == 'Basic') { 
+			return getUserByBasicAuthorization(auth[1])
+		}
+		else if (auth[0] == 'Bearer') {
+			return getUserByToken(auth[1]);
+		}
 	}
 }
 
@@ -109,14 +115,28 @@ function login(req, res, next) {
 
 function checkAuth(req, res, next) {
 	if(req.headers.authorization) {
-		getUserByBasicAuthorization(req.headers.authorization).then(function (usuario) {
-			if (usuario) {
-				next();
-			}
-			else {
-				res.status(401).send("Usuario o password incorrectos");
-			}
-		});
+		var auth = req.headers.authorization.split(' ');
+		if (auth[0] == 'Basic') { 
+			console.log('BASIC');
+			getUserByBasicAuthorization(auth[1]).then(function (usuario) {
+				if (usuario) {
+					next();
+				}
+				else {
+					res.status(401).send("Usuario o password incorrectos");
+				}
+			});
+		}
+		else if (auth[0] == 'Bearer') {
+			getUserByToken(auth[1]).then(function (usuario) {
+				if (usuario) {
+					next();
+				}
+				else {
+					res.status(401).send("Token inválido");
+				}
+			});
+		}
 	}
 	else if(req.query.access_token) {
 		

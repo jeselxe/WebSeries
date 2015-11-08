@@ -35,7 +35,7 @@ describe('Pruebas de Comentarios', function () {
 	it('POST /:id/temporada/:season/capitulo/:episode/comentario añade nuevo comentario al capítulo', function(done) {
 		supertest(app)
 		.post('/api/series/1/temporada/1/capitulo/1/comentario')
-		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
+		.set('Authorization', 'Basic UGVwZTpwZXBl')
 		.send({comment : 'Nuevo comentario'})
 		.expect(201)
 		.expect("Comentario creado correctamente", done);
@@ -44,7 +44,7 @@ describe('Pruebas de Comentarios', function () {
 	it('POST /:id/comentario añade nuevo comentario a la serie', function(done) {
 		supertest(app)
 		.post('/api/series/1/comentario')
-		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
+		.set('Authorization', 'Basic UGVwZTpwZXBl')
 		.send({comment : 'Nuevo comentario'})
 		.expect(201)
 		.expect("Comentario creado correctamente", done);
@@ -53,7 +53,7 @@ describe('Pruebas de Comentarios', function () {
 	it('PUT /:id/temporada/:season/capitulo/:episode/comentario/:comment edita comentario de capítulo', function(done) {
 		supertest(app)
 		.put('/api/series/1/temporada/1/capitulo/1/comentario/1')
-		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
+		.set('Authorization', 'Basic UGVwZTpwZXBl')
 		.send({comment : 'Nuevo comentario'})
 		.expect(204, done);
 	});
@@ -61,7 +61,7 @@ describe('Pruebas de Comentarios', function () {
 	it('PUT /:id/comentario/:comment edita comentario de la serie', function(done) {
 		supertest(app)
 		.put('/api/series/1/comentario/61')
-		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
+		.set('Authorization', 'Basic UGVwZTpwZXBl')
 		.send({comment : 'Nuevo comentario'})
 		.expect(204, done);
 	});
@@ -69,7 +69,7 @@ describe('Pruebas de Comentarios', function () {
 	it('PUT /:id/temporada/:season/capitulo/:episode/comentario/:comment comment no numérico', function(done) {
 		supertest(app)
 		.put('/api/series/1/temporada/1/capitulo/1/comentario/uno')
-		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
+		.set('Authorization', 'Basic UGVwZTpwZXBl')
 		.send({comment : 'Nuevo comentario'})
 		.expect(400)
 		.expect("Error: El id del comentario no es un número", done);
@@ -78,7 +78,7 @@ describe('Pruebas de Comentarios', function () {
 	it('PUT /:id/comentario/:comment comment no numérico', function(done) {
 		supertest(app)
 		.put('/api/series/1/comentario/uno')
-		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
+		.set('Authorization', 'Basic UGVwZTpwZXBl')
 		.send({comment : 'Nuevo comentario'})
 		.expect(400)
 		.expect("Error: El id del comentario no es un número", done);
@@ -87,7 +87,7 @@ describe('Pruebas de Comentarios', function () {
 	it('DELETE /:id/temporada/:season/capitulo/:episode/comentario/:comment borra comentario de capítulo', function(done) {
 		supertest(app)
 		.delete('/api/series/1/temporada/1/capitulo/1/comentario/1')
-		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
+		.set('Authorization', 'Basic UGVwZTpwZXBl')
 		.expect(200)
 		.expect("Comentario eliminado", done);
 	});
@@ -95,7 +95,7 @@ describe('Pruebas de Comentarios', function () {
 	it('DELETE /:id/comentario/:comment borra comentario de la serie', function(done) {
 		supertest(app)
 		.delete('/api/series/1/comentario/61')
-		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
+		.set('Authorization', 'Basic UGVwZTpwZXBl')
 		.expect(200)
 		.expect("Comentario eliminado", done);
 	});
@@ -103,7 +103,7 @@ describe('Pruebas de Comentarios', function () {
 	it('DELETE /:id/temporada/:season/capitulo/:episode/comentario/:comment comment no numérico', function(done) {
 		supertest(app)
 		.delete('/api/series/1/temporada/1/capitulo/1/comentario/uno')
-		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
+		.set('Authorization', 'Basic UGVwZTpwZXBl')
 		.expect(400)
 		.expect("Error: El id del comentario no es un número", done);
 	});
@@ -111,7 +111,7 @@ describe('Pruebas de Comentarios', function () {
 	it('DELETE /:id/comentario/:comment comment no numérico', function(done) {
 		supertest(app)
 		.delete('/api/series/1/comentario/uno')
-		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
+		.set('Authorization', 'Basic UGVwZTpwZXBl')
 		.expect(400)
 		.expect("Error: El id del comentario no es un número", done);
 	});
