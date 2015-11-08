@@ -22,7 +22,7 @@ router.post('/', auth.checkAuth, function(req, res) {
 			});
 		}
 		else {
-			res.status(401).send("Token no válido");
+			res.status(401).send("Autorización incorrecta");
 		}
 	});
 });
@@ -195,18 +195,25 @@ router.post('/:id/comentario', auth.checkAuth, function(req, res) {
 		res.status(400).send("Error: El id no es un número");
 	}
 	else {
-		models.Serie.findById(id).then(function(serie){
-			if (serie) {
-				models.Comentario.create({
-					SerieId : id,
-					UsuarioId : req.body.user,
-					comment : req.body.comment
-				}).then(function() {
-					res.status(201).send("Comentario creado correctamente");
+		auth.getUserAuthorized(req).then(function (usuario) {
+			if (usuario) {
+				models.Serie.findById(id).then(function(serie){
+					if (serie) {
+						models.Comentario.create({
+							SerieId : id,
+							UsuarioId : usuario.dataValues.id,
+							comment : req.body.comment
+						}).then(function() {
+							res.status(201).send("Comentario creado correctamente");
+						});
+					}
+					else {
+						res.status(404).send("La serie no existe");
+					}
 				});
 			}
 			else {
-				res.status(404).send("La serie no existe");
+				res.status(401).send("Autorización incorrecta");
 			}
 		});
 	}
@@ -521,13 +528,20 @@ router.post('/:id/temporada/:season/capitulo/:episode/comentario', auth.checkAut
 								capitulos.forEach(function (capitulo) {
 									if(capitulo.dataValues.id == episodeId) {
 										isEpisode = true;
-										models.Comentario.create({
-											comment: req.body.comment,
-											UsuarioId: req.body.user,
-											CapituloId: episodeId
-										}).then(function () {
-											res.status(201).send("Comentario creado correctamente");
-										})
+										auth.getUserAuthorized(req).then(function (usuario) {
+											if (usuario) {
+												models.Comentario.create({
+													comment: req.body.comment,
+													UsuarioId: usuario.dataValues.id,
+													CapituloId: episodeId
+												}).then(function () {
+													res.status(201).send("Comentario creado correctamente");
+												});
+											}
+											else {
+												res.status(401).send("Autorización incorrecta");
+											}
+										});
 									}
 								});
 								if(!isEpisode)
