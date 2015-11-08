@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
-
+/*
 // error handler
 // no stacktraces leaked to user unless in development environment
 app.use(function(err, req, res, next) {
@@ -28,7 +28,7 @@ app.use(function(err, req, res, next) {
         message: err.message,
         error: (app.get('env') === 'development') ? err : {}
     });
-});
+});*/
 
 module.exports = app;
 

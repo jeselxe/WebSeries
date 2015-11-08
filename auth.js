@@ -4,7 +4,13 @@ var models = require('./models');
 var config = require('./config')
 
 function decodeToken(token) {
-	var decoded = jwt.decode(token, config.secret);
+	var decoded = {};
+	try {
+		decoded = jwt.decode(token, config.secret);
+	}
+	catch (err){
+		console.log(err);
+	}
 	return decoded;
 }
  
@@ -24,6 +30,10 @@ function encriptarBase64(usuario) {
 }
 
 function getUserByToken(token) {
+	
+	var decoded = decodeToken(token, config.secret);
+	decoded.login = decoded.login || ''
+	
 	return models.Usuario.find({
 		where: {
 			token : token,
