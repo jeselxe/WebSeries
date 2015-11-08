@@ -19,6 +19,11 @@ function desencriptarBase64(basic) {
 	return JSON.parse(userJSON);
 }
 
+function encriptarBase64(usuario) {
+	var encriptado = new Buffer(JSON.stringify(usuario)).toString('base64');
+	return encriptado;
+}
+
 function getUserByToken(token) {
 	return models.Usuario.find({
 		where: {
@@ -33,7 +38,7 @@ function getUserByBasicAuthorization(basic) {
 		
 	return models.Usuario.find({
 		where: {
-			nickname: user.user,
+			nickname: user.nickname,
 			password: user.password
 		}
 	});
@@ -62,29 +67,39 @@ function newToken(usuario) {
 }
 
 function login(req, res, next) {
-	console.log(new Buffer('{"user" : "Pepe", "password": "pepe"}').toString('base64'));
-	if (req.headers.authorization) {
+	models.Usuario.find({
+		where : {
+			nickname : req.body.user,
+			password : req.body.password 
+		},
+		attributes : ['id', 'nickname', 'password']
+	}).then(function (user) {
+		if (user) {
+			var token = newToken(user);
+			res.header('Authorization', 'Bearer ' + token);
+			var authorization = {
+				basic : encriptarBase64(user),
+				token : token
+			}
+			res.send(authorization);
+			next();
+		}
+		else {
+			res.status(401).send("Usuario o password incorrectos");
+		}
+	});
+}
+
+function checkAuth(req, res, next) {
+	if(req.headers.authorization) {
 		getUserByBasicAuthorization(req.headers.authorization).then(function (usuario) {
 			if (usuario) {
-				var token = newToken(usuario);
-				res.header('Authorization', 'Bearer ' + token);
-				
 				next();
 			}
 			else {
 				res.status(401).send("Usuario o password incorrectos");
 			}
 		});
-	}
-	else {
-		res.status(401).send("Debes autentificarte");
-	}
-}
-
-function checkAuth(req, res, next) {
-	if(req.headers.authorization) {
-		// OK: eyJ1c2VyIiA6ICJhZG1pbiIsICJwYXNzd29yZCI6ICIxMjM0NTYifQ==
-		login(req, res, next);
 	}
 	else if(req.query.access_token) {
 		
