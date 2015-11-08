@@ -44,12 +44,12 @@ function getUserByBasicAuthorization(basic) {
 	});
 }
 
-function getUserAuthorized(token, basic) {
-	if (token) {
-		return getUserByToken(token);
+function getUserAuthorized(req) {
+	if (req.query.access_token) {
+		return getUserByToken(req.query.access_token);
 	}
-	else if (basic){
-		return getUserByBasicAuthorization(basic);
+	else if (req.headers.authorization){
+		return getUserByBasicAuthorization(req.headers.authorization);
 	}
 }
 

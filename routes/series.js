@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', auth.checkAuth, function(req, res) {	
-	auth.getUserAuthorized(req.query.access_token, req.headers.authorization).then(function (usuario) {
+	auth.getUserAuthorized(req).then(function (usuario) {
 		if (usuario) {
 			models.Serie.create({
 				title: req.body.title,
