@@ -1,8 +1,16 @@
 var app = require('../app');
 var supertest = require('supertest');
 var assert = require('assert');
+var data = require('../data');
 
 describe('Pruebas de Capítulos', function () {
+	
+	beforeEach('Reset DB', function (done) {
+		data.fillData().then(function () {
+			console.log('Database updated');
+			done();
+		});
+	});
 	
 	it('GET /:id/temporada/:season devuelve los capítulos de la temporada', function(done) {
 		supertest(app)
@@ -27,6 +35,7 @@ describe('Pruebas de Capítulos', function () {
 	it('POST /:id/temporada/:season/capitulo id no numérico', function(done) {
 		supertest(app)
 		.post('/api/series/uno/temporada/1/capitulo')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.field('title', 'Titulo de capítulo')
 		.expect(400)
 		.expect("Error: El id de la serie no es un número", done);
@@ -35,6 +44,7 @@ describe('Pruebas de Capítulos', function () {
 	it('POST /:id/temporada/:season/capitulo season no numérico', function(done) {
 		supertest(app)
 		.post('/api/series/1/temporada/uno/capitulo')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')		
 		.field('title', 'Titulo de capítulo')
 		.expect(400)
 		.expect("Error: El id de la temporada no es un número", done);
@@ -43,6 +53,7 @@ describe('Pruebas de Capítulos', function () {
 	it('POST /:id/temporada/:season/capitulo serie no existe', function(done) {
 		supertest(app)
 		.post('/api/series/0/temporada/1/capitulo')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.field('title', 'Titulo de capítulo')
 		.expect(404)
 		.expect("La serie no existe", done);
@@ -51,6 +62,7 @@ describe('Pruebas de Capítulos', function () {
 	it('POST /:id/temporada/:season/capitulo temporada de otra serie', function(done) {
 		supertest(app)
 		.post('/api/series/1/temporada/13/capitulo')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.field('title', 'Titulo de capítulo')
 		.expect(404)
 		.expect("La temporada no existe o no pertenece a esta serie", done);
@@ -59,6 +71,7 @@ describe('Pruebas de Capítulos', function () {
 	it('POST /:id/temporada/:season/capitulo añade nuevo capítulo', function(done) {
 		supertest(app)
 		.post('/api/series/1/temporada')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.field('title', 'Titulo de capítulo')
 		.expect(201)
 		.expect("Temporada creada correctamente", done);
@@ -67,6 +80,7 @@ describe('Pruebas de Capítulos', function () {
 	it('DELETE /:id/temporada/:season/capitulo/:episode id no numérico', function(done) {
 		supertest(app)
 		.delete('/api/series/uno/temporada/1/capitulo/1')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.expect(400)
 		.expect("Error: El id de la serie no es un número", done);
 	});
@@ -74,6 +88,7 @@ describe('Pruebas de Capítulos', function () {
 	it('DELETE /:id/temporada/:season/capitulo/:episode season no numérico', function(done) {
 		supertest(app)
 		.delete('/api/series/1/temporada/uno/capitulo/1')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.expect(400)
 		.expect("Error: El id de la temporada no es un número", done);
 	});
@@ -81,6 +96,7 @@ describe('Pruebas de Capítulos', function () {
 	it('DELETE /:id/temporada/:season/capitulo/:episode episode no numérico', function(done) {
 		supertest(app)
 		.delete('/api/series/1/temporada/1/capitulo/uno')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.expect(400)
 		.expect("Error: El id del capítulo no es un número", done);
 	});
@@ -88,6 +104,7 @@ describe('Pruebas de Capítulos', function () {
 	it('DELETE /:id/temporada/:season/capitulo/:episode la temporada no pertenece a la serie', function(done) {
 		supertest(app)
 		.delete('/api/series/1/temporada/13/capitulo/1')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.expect(404)
 		.expect("La temporada no existe o no pertenece a esta serie", done);
 	});
@@ -95,6 +112,7 @@ describe('Pruebas de Capítulos', function () {
 	it('DELETE /:id/temporada/:season/capitulo/:episode el capitulo no pertenece a la temporada', function(done) {
 		supertest(app)
 		.delete('/api/series/1/temporada/1/capitulo/15')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.expect(404)
 		.expect("El capítulo no existe o no pertenece a esta temporada", done);
 	});
@@ -102,6 +120,7 @@ describe('Pruebas de Capítulos', function () {
 	it('DELETE /:id/temporada/:season/capitulo/:episode la serie no existe', function(done) {
 		supertest(app)
 		.delete('/api/series/0/temporada/1/capitulo/1')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.expect(404)
 		.expect("La serie no existe", done);
 	});
@@ -109,6 +128,7 @@ describe('Pruebas de Capítulos', function () {
 	it('DELETE /:id/temporada/:season/capitulo/:episode borra capitulo', function(done) {
 		supertest(app)
 		.delete('/api/series/1/temporada/1/capitulo/1')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.expect(200, done);
 	});
 	

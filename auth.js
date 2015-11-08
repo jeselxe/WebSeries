@@ -1,16 +1,15 @@
 var jwt = require('jwt-simple');
 var moment = require('moment');
 var models = require('./models');
-
-var secret='123456';
+var config = require('./config')
 
 function decodeToken(token) {
-	var decoded = jwt.decode(token, secret);
+	var decoded = jwt.decode(token, config.secret);
 	return decoded;
 }
  
 function generateToken(payload) {
-	var token = jwt.encode(payload, secret);
+	var token = jwt.encode(payload, config.secret);
 	return token;
 }
 
@@ -28,7 +27,7 @@ function getUserByToken(token) {
 	return models.Usuario.find({
 		where: {
 			token : token,
-			nickname: decodeToken(token, secret).login
+			nickname: decodeToken(token, config.secret).login
 		}
 	});
 }

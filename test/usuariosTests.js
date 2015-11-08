@@ -1,8 +1,17 @@
 var app = require('../app');
 var supertest = require('supertest');
 var assert = require('assert');
+var data = require('../data');
 
 describe('Pruebas de Usuarios', function () {
+	
+	beforeEach('Reset DB', function (done) {
+		data.fillData().then(function () {
+			console.log('Database updated');
+			done();
+		});
+	});
+	
 	it('GET /:id devuelve el usuario', function (done) {
 		supertest(app)
 		.get('/api/usuario/1')
@@ -59,6 +68,7 @@ describe('Pruebas de Usuarios', function () {
 	it('PUT /:id actualiza el usuario', function(done) {
 		supertest(app)
 		.put('/api/usuario/1')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.field('nickname', 'Juan')
 		.expect(204, done);
 	});
@@ -66,6 +76,7 @@ describe('Pruebas de Usuarios', function () {
 	it('PUT /:id no existe usuario', function(done) {
 		supertest(app)
 		.put('/api/usuario/0')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.field('nickname', 'Juan')
 		.expect(404, done);		
 	});
@@ -73,26 +84,30 @@ describe('Pruebas de Usuarios', function () {
 	it('PUT /:id id no numérico', function(done) {
 		supertest(app)
 		.put('/api/usuario/uno')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.field('nickname', 'Juan')
 		.expect(400, done);		
-	});
-	
-	it('DELETE /:id borra el usuario', function(done) {
-		supertest(app)
-		.delete('/api/usuario/1')
-		.expect(200, done);
 	});
 	
 	it('DELETE /:id no existe usuario', function(done) {
 		supertest(app)
 		.delete('/api/usuario/0')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.expect(404, done);
 	});
 	
 	it('DELETE /:id id no numérico', function(done) {
 		supertest(app)
 		.delete('/api/usuario/uno')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
 		.expect(400, done);
+	});
+	
+	it('DELETE /:id borra el usuario', function(done) {
+		supertest(app)
+		.delete('/api/usuario/1')
+		.set('Authorization', 'Basic eyJpZCI6MSwibmlja25hbWUiOiJQZXBlIiwicGFzc3dvcmQiOiJwZXBlIiwidG9rZW4iOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuZXlKc2IyZHBiaUk2SWxCbGNHVWlMQ0psZUhBaU9qRTBORGMxT0RBMk5qRXdPRGw5LmYzSG5BN1BjaGhoQk45bVZWNHlQTDl3dmswbTYyV1QyS2daanc1UE92cXMifQ==')
+		.expect(200, done);
 	});
 	
 })
