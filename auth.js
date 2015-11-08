@@ -95,15 +95,11 @@ function login(req, res, next) {
 	}).then(function (user) {
 		if (user) {
 			var token = newToken(user);
-			
 			var basicUser = user.nickname + ":" + user.password;
-			
 			var authorization = {
 				basic : encriptarBase64(basicUser),
 				token : token
 			}
-			
-			res.header('Authorization', 'Bearer ' + token);
 			res.send(authorization);
 			next();
 		}
