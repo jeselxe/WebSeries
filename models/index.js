@@ -2,8 +2,9 @@
 
 var fs        = require("fs");
 var path      = require("path");
+var config    = require('../config');
 var Sequelize = require("sequelize");
-var sequelize = new Sequelize('bd', '', '', { dialect: 'sqlite', storage: 'bd.sqlite' });
+var sequelize = new Sequelize(config.db.database, config.db.username, config.db.password, config.db.options);
 var db        = {};
 
 fs

@@ -1,5 +1,6 @@
 var models  = require('../models');
 var express = require('express');
+var auth = require('../auth');
 var router  = express.Router();
 
 
@@ -9,17 +10,24 @@ router.get('/', function(req, res) {
 	});
 });
 
-router.post('/', function(req, res) {	
-	models.Serie.create({
-		title: req.body.title,
-		description: req.body.description,
-		UsuarioId: req.body.user
-	}).then(function() {
-		res.status(201).send("Serie creada correctamente");
+router.post('/', auth.checkAuth, function(req, res) {	
+	auth.getUserAuthorized(req).then(function (usuario) {
+		if (usuario) {
+			models.Serie.create({
+				title: req.body.title,
+				description: req.body.description,
+				UsuarioId: usuario.dataValues.id
+			}).then(function(serie) {
+				res.status(201).send("Serie creada correctamente");
+			});
+		}
+		else {
+			res.status(401).send("Autorización incorrecta");
+		}
 	});
 });
 
-router.delete('/:id', function(req, res) {
+router.delete('/:id', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
 		res.status(400).send("Error: El id no es un número");
@@ -42,7 +50,7 @@ router.delete('/:id', function(req, res) {
 	}
 });
 
-router.put('/:id', function(req, res) {
+router.put('/:id', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
 		res.status(400).send("Error: El id no es un número");
@@ -102,7 +110,7 @@ router.get('/:id', function(req, res) {
 	}
 });
 
-router.put('/:id/comentario/:comment', function(req, res) {
+router.put('/:id/comentario/:comment', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	var commentId = req.params.comment;
 	if (isNaN(id)) {
@@ -143,7 +151,7 @@ router.put('/:id/comentario/:comment', function(req, res) {
 	}
 });
 
-router.delete('/:id/comentario/:comment', function(req, res) {
+router.delete('/:id/comentario/:comment', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	var commentId = req.params.comment;
 	if (isNaN(id)) {
@@ -181,30 +189,37 @@ router.delete('/:id/comentario/:comment', function(req, res) {
 	}
 });
 
-router.post('/:id/comentario', function(req, res) {
+router.post('/:id/comentario', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
 		res.status(400).send("Error: El id no es un número");
 	}
 	else {
-		models.Serie.findById(id).then(function(serie){
-			if (serie) {
-				models.Comentario.create({
-					SerieId : id,
-					UsuarioId : req.body.user,
-					comment : req.body.comment
-				}).then(function() {
-					res.status(201).send("Comentario creado correctamente");
+		auth.getUserAuthorized(req).then(function (usuario) {
+			if (usuario) {
+				models.Serie.findById(id).then(function(serie){
+					if (serie) {
+						models.Comentario.create({
+							SerieId : id,
+							UsuarioId : usuario.dataValues.id,
+							comment : req.body.comment
+						}).then(function() {
+							res.status(201).send("Comentario creado correctamente");
+						});
+					}
+					else {
+						res.status(404).send("La serie no existe");
+					}
 				});
 			}
 			else {
-				res.status(404).send("La serie no existe");
+				res.status(401).send("Autorización incorrecta");
 			}
 		});
 	}
 });
 
-router.post('/:id/temporada', function(req, res) {
+router.post('/:id/temporada', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	if (isNaN(id)) {
 		res.status(400).send("Error: El id no es un número");
@@ -228,7 +243,7 @@ router.post('/:id/temporada', function(req, res) {
 	}
 });
 
-router.delete('/:id/temporada/:season', function(req, res) {
+router.delete('/:id/temporada/:season', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	if (isNaN(id)) {
@@ -300,7 +315,7 @@ router.get('/:id/temporada/:season', function(req, res) {
 	}
 });
 
-router.post('/:id/temporada/:season/capitulo', function(req, res) {
+router.post('/:id/temporada/:season/capitulo', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	if (isNaN(id)) {
@@ -337,7 +352,7 @@ router.post('/:id/temporada/:season/capitulo', function(req, res) {
 	}
 });
 
-router.delete('/:id/temporada/:season/capitulo/:episode', function(req, res) {
+router.delete('/:id/temporada/:season/capitulo/:episode', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	var episodeId = req.params.episode;
@@ -389,7 +404,7 @@ router.delete('/:id/temporada/:season/capitulo/:episode', function(req, res) {
 	}
 });
 
-router.put('/:id/temporada/:season/capitulo/:episode', function(req, res) {
+router.put('/:id/temporada/:season/capitulo/:episode', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	var episodeId = req.params.episode;
@@ -487,7 +502,7 @@ router.get('/:id/temporada/:season/capitulo/:episode', function(req, res) {
 	}
 });
 
-router.post('/:id/temporada/:season/capitulo/:episode/comentario', function(req, res) {
+router.post('/:id/temporada/:season/capitulo/:episode/comentario', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	var episodeId = req.params.episode;
@@ -513,13 +528,20 @@ router.post('/:id/temporada/:season/capitulo/:episode/comentario', function(req,
 								capitulos.forEach(function (capitulo) {
 									if(capitulo.dataValues.id == episodeId) {
 										isEpisode = true;
-										models.Comentario.create({
-											comment: req.body.comment,
-											UsuarioId: req.body.user,
-											CapituloId: episodeId
-										}).then(function () {
-											res.status(201).send("Comentario creado correctamente");
-										})
+										auth.getUserAuthorized(req).then(function (usuario) {
+											if (usuario) {
+												models.Comentario.create({
+													comment: req.body.comment,
+													UsuarioId: usuario.dataValues.id,
+													CapituloId: episodeId
+												}).then(function () {
+													res.status(201).send("Comentario creado correctamente");
+												});
+											}
+											else {
+												res.status(401).send("Autorización incorrecta");
+											}
+										});
 									}
 								});
 								if(!isEpisode)
@@ -539,7 +561,7 @@ router.post('/:id/temporada/:season/capitulo/:episode/comentario', function(req,
 	}
 });
 
-router.delete('/:id/temporada/:season/capitulo/:episode/comentario/:comment', function(req, res) {
+router.delete('/:id/temporada/:season/capitulo/:episode/comentario/:comment', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	var episodeId = req.params.episode;
@@ -605,7 +627,7 @@ router.delete('/:id/temporada/:season/capitulo/:episode/comentario/:comment', fu
 	}
 });
 
-router.put('/:id/temporada/:season/capitulo/:episode/comentario/:comment', function(req, res) {
+router.put('/:id/temporada/:season/capitulo/:episode/comentario/:comment', auth.checkAuth, function(req, res) {
 	var id = req.params.id;
 	var seasonId = req.params.season;
 	var episodeId = req.params.episode;
