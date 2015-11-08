@@ -20,19 +20,23 @@ function generateToken(payload) {
 }
 
 function desencriptarBase64(basic) {
-	var userJSON = new Buffer(basic.split(' ')[1], 'base64').toString('utf8');
-	return JSON.parse(userJSON);
+	var credentials = new Buffer(basic.split(' ')[1], 'base64').toString('utf8').split(":");
+	var user = {
+		nickname: credentials[0],
+		password: credentials[1]
+	}
+	return user;
 }
 
 function encriptarBase64(usuario) {
-	var encriptado = new Buffer(JSON.stringify(usuario)).toString('base64');
+	var encriptado = new Buffer(usuario).toString('base64');
 	return encriptado;
 }
 
 function getUserByToken(token) {
 	
 	var decoded = decodeToken(token, config.secret);
-	decoded.login = decoded.login || ''
+	decoded.login = decoded.login || '';
 	
 	return models.Usuario.find({
 		where: {
@@ -85,11 +89,15 @@ function login(req, res, next) {
 	}).then(function (user) {
 		if (user) {
 			var token = newToken(user);
-			res.header('Authorization', 'Bearer ' + token);
+			
+			var basicUser = user.nickname + ":" + user.password;
+			
 			var authorization = {
-				basic : encriptarBase64(user),
+				basic : encriptarBase64(basicUser),
 				token : token
 			}
+			
+			res.header('Authorization', 'Bearer ' + token);
 			res.send(authorization);
 			next();
 		}
@@ -122,6 +130,7 @@ function checkAuth(req, res, next) {
 		});
 	}
 	else {
+		res.header('WWW-Authenticate', 'Basic realm="realm WebSeries"');
 		res.status(401).send("Debes autentificarte");
 	}
 };
