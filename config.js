@@ -8,5 +8,9 @@ module.exports = {
 			dialect : 'sqlite',
 			storage : 'bd.sqlite'
 		}
+	},
+	tviso : {
+		id_api : '3436',
+		secret : '7hfreuhCnfFekNwshxUn'
 	}
 }
