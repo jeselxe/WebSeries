@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 
 var series = require('./routes/series');
 var usuario = require('./routes/usuario');
+var news = require('./routes/tviso');
 var models = require('./models');
 
 var app = express();
@@ -12,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/series', series);
 app.use('/api/usuario', usuario);
+app.use('/api/noticias', news);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
