@@ -88,16 +88,14 @@ describe('Pruebas de Comentarios', function () {
 		supertest(app)
 		.delete('/api/series/1/temporada/1/capitulo/1/comentario/1')
 		.set('Authorization', 'Basic UGVwZTpwZXBl')
-		.expect(200)
-		.expect("Comentario eliminado", done);
+		.expect(204, done);
 	});
 	
 	it('DELETE /:id/comentario/:comment borra comentario de la serie', function(done) {
 		supertest(app)
 		.delete('/api/series/1/comentario/61')
 		.set('Authorization', 'Basic UGVwZTpwZXBl')
-		.expect(200)
-		.expect("Comentario eliminado", done);
+		.expect(204, done);
 	});
 	
 	it('DELETE /:id/temporada/:season/capitulo/:episode/comentario/:comment comment no numérico', function(done) {

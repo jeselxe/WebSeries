@@ -20,7 +20,6 @@ describe('Pruebas de Token', function () {
 		.send({user : "Pepe", password : "pepe"})
 		.expect(200)
 		.expect(function(res) {
-			assert(res.headers.authorization.indexOf('Bearer') != -1);
 			assert(res.body.basic);
 			assert(res.body.token);
 			

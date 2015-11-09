@@ -88,8 +88,7 @@ describe('Pruebas de Series', function () {
 		supertest(app)
 		.delete('/api/series/1')
 		.set('Authorization', 'Basic UGVwZTpwZXBl')
-		.expect(200)
-		.expect("serie Eliminada", done);
+		.expect(204, done);
 	});
 	
 	it('DELETE /:id no existe la serie', function(done) {

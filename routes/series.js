@@ -40,7 +40,7 @@ router.delete('/:id', auth.checkAuth, function(req, res) {
 						id: id
 					}
 				}).then(function() {
-					res.send("serie Eliminada");
+					res.status(204).send("serie Eliminada");
 				});
 			}
 			else {
@@ -173,7 +173,7 @@ router.delete('/:id/comentario/:comment', auth.checkAuth, function(req, res) {
 									id: commentId
 								}
 							}).then(function() {
-								res.send("Comentario eliminado").end();
+								res.status(204).send("Comentario eliminado").end();
 							});
 						}
 					});
@@ -265,7 +265,7 @@ router.delete('/:id/temporada/:season', auth.checkAuth, function(req, res) {
 									id :seasonId
 								}
 							}).then(function() {
-								res.send("Temporada eliminada").end();
+								res.status(204).send("Temporada eliminada").end();
 							});
 						}
 					});
@@ -383,7 +383,7 @@ router.delete('/:id/temporada/:season/capitulo/:episode', auth.checkAuth, functi
 												id : episodeId
 											}
 										}).then(function () {
-											res.send("Capitulo eliminado").end();
+											res.status(204).send("Capitulo eliminado").end();
 										})
 									}
 								});
@@ -601,7 +601,7 @@ router.delete('/:id/temporada/:season/capitulo/:episode/comentario/:comment', au
 															id : commentId
 														}
 													}).then(function () {
-														res.send("Comentario eliminado").end();
+														res.status(204).send("Comentario eliminado").end();
 													});
 												}
 											});

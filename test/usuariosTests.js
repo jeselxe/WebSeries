@@ -107,7 +107,7 @@ describe('Pruebas de Usuarios', function () {
 		supertest(app)
 		.delete('/api/usuario/1')
 		.set('Authorization', 'Basic UGVwZTpwZXBl')
-		.expect(200, done);
+		.expect(204, done);
 	});
 	
 })

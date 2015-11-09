@@ -129,7 +129,7 @@ describe('Pruebas de Capítulos', function () {
 		supertest(app)
 		.delete('/api/series/1/temporada/1/capitulo/1')
 		.set('Authorization', 'Basic UGVwZTpwZXBl')
-		.expect(200, done);
+		.expect(204, done);
 	});
 	
 });

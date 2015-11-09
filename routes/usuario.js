@@ -63,7 +63,7 @@ router.delete('/:id', auth.checkAuth, function(req, res) {
 						id: id
 					}
 				}).then(function() {
-					res.send("Usuario Eliminado");
+					res.status(204).send("Usuario Eliminado");
 				});
 			}
 			else {
