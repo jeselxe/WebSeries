@@ -42,9 +42,9 @@ describe('Pruebas de Series', function () {
 		.get('/api/series/1')
 		.expect(200)
 		.expect(function (req) {
-			assert.equal("The Big Bang Theory", req.body.title);
-			assert.equal("descripción de la serie The Big Bang Theory", req.body.description);
-			assert.equal(9, req.body.temporadas.length);
+			assert.equal("The Big Bang Theory", req.body.serie.title);
+			assert.equal("descripción de la serie The Big Bang Theory", req.body.serie.description);
+			assert.equal(9, req.body.serie.temporadas.length);
 		})
 		.end(done);
 	});
