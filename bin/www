@@ -4,7 +4,7 @@ var app = require('../app');
 var models = require("../models");
 var data = require('../data');
 
-var PORT = 8000;
+var PORT = process.env.PORT || 8000;
 
 data.fillData()
 .then(function(){
