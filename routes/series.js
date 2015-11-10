@@ -1,12 +1,25 @@
 var models  = require('../models');
 var express = require('express');
 var auth = require('../auth');
+var Paginate = require('../paginate');
 var router  = express.Router();
 
 
 router.get('/', function(req, res) {
 	models.Serie.findAll().then(function(series) {
-		res.send(series);
+		
+		var opts = {
+			limit: parseInt(req.query.limit) || 20,
+			page: parseInt(req.query.page) || 1
+		};
+		
+		var pager = new Paginate(series, opts.limit);
+		
+		var result = {};
+		result.series = pager.page(opts.page);
+		result._links = pager.getLinks(req);
+		
+		res.send(result);
 	});
 });
 
@@ -97,9 +110,20 @@ router.get('/:id', function(req, res) {
 							SerieId : id
 						}
 					}).then(function (comentarios) {
-						serie.dataValues.comentarios = comentarios;
 						
-						res.send(serie);
+						var opts = {
+							limit: parseInt(req.query.limit) || 5,
+							page: parseInt(req.query.page) || 1
+						};
+						
+						var pager = new Paginate(comentarios, opts.limit);
+						serie.dataValues.comentarios = pager.page(opts.page);
+						
+						var result = {};
+						result.serie = serie;
+						result._links = pager.getLinks(req);
+						
+						res.send(result);
 					});
 				});
 			}
@@ -481,7 +505,19 @@ router.get('/:id/temporada/:season/capitulo/:episode', function(req, res) {
 									if(capitulo.dataValues.id == episodeId) {
 										isEpisode = true;
 										capitulo.getComentarios({ attributes : ["id", "comment", "createdAt", "updatedAt", 'UsuarioId']}).then(function (comentarios) {
-											res.send(comentarios);
+											
+											var opts = {
+												limit: parseInt(req.query.limit) || 20,
+												page: parseInt(req.query.page) || 1
+											};
+											
+											var pager = new Paginate(comentarios, opts.limit);
+											
+											var result = {};
+											result.comentarios = pager.page(opts.page);
+											result._links = pager.getLinks(req);
+											
+											res.send(result);
 										});
 									}
 								});

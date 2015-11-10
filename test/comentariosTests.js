@@ -17,7 +17,7 @@ describe('Pruebas de Comentarios', function () {
 		.get('/api/series/1')
 		.expect(200)
 		.expect(function (res) {
-			assert.equal(10, res.body.comentarios.length);
+			assert.equal(5, res.body.serie.comentarios.length);
 		})
 		.end(done);
 	});
@@ -27,7 +27,7 @@ describe('Pruebas de Comentarios', function () {
 		.get('/api/series/1/temporada/1/capitulo/1')
 		.expect(200)
 		.expect(function (res) {
-			assert.equal(2, res.body.length);
+			assert.equal(2, res.body.comentarios.length);
 		})
 		.end(done);
 	});
