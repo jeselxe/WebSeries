@@ -1,0 +1,165 @@
+FORMAT: 1A
+HOST: http://webseries.herokuapp.com
+
+# WebSeries
+
+WebSeries is a simple API allowing consumers to view, create and comment series
+
+## Login [/api/usuario/login]
+Returns the user encoded in base64 and the token if the user exists
+
+### Retreive authentication [POST]
+
++ Request (application/json)
+
+		{
+			"user" : "Pepe",
+			"password" : "pepe"
+		}
+		
++ Response 200 (application/json)
+		
+		{
+			"basic": "UGVwZTpwZXBl",
+			"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpbiI6IlBlcGUiLCJleHAiOjE0NDgwNjE5NjkyOTl9.rO0tuIZM7-4JrAauXOi3uYa_VXXkcgmLTJ0EzoiTqFk"
+		}
+
++ Response 401 (text/plain)
+
+		Usuario o password incorrectos
+
+## User [/api/usuario/{usuario_id}{?access_token}]
+
++ Parameters
+	+ usuario_id (number) - ID of the user
+	+ access_token (optional, string) - Authorization Token
+	
+### Read [GET]		
+
++ Response 200 (application/json)
+	
+		{
+			"id": 1,
+			"nickname": "Pepe",
+			"password": "pepe",
+			"token": null,
+			"createdAt": "2015-11-13T22:10:27.696Z",
+			"updatedAt": "2015-11-13T22:10:27.696Z"
+		}
+	
++ Response 400 (text/plain)
+	
+		Error: El id no es un número
+	
++ Response 404
+	
+### Update [PUT]
+
++ Request (application/json)
+	+ Headers
+	
+			Authorization: Basic ABCDEF
+		
+	+ Body
+	
+			{
+				"nickname" : "Jose"
+			}
+
++ Request (application/json)
+	+ Headers
+	
+			Authorization: Bearer fdfniw793ir.v3bciwn82fc2.d31rF1d2vvas
+		
+	+ Body
+	
+			{
+				"nickname" : "Jose"
+			}
+		
++ Response 204
+
++ Response 400 (text/plain)
+
+		Error: El id no es un número
+	
++ Response 404
+
+### Delete [DELETE]
+
++ Request (application/json)
+	+ Headers
+	
+			Authorization: Basic ABCDEF
+		
+	+ Body
+	
+			{
+				"nickname" : "Jose"
+			}
+
++ Request (application/json)
+	+ Headers
+	
+			Authorization: Bearer fdfniw793ir.v3bciwn82fc2.d31rF1d2vvas
+		
+	+ Body
+	
+			{
+				"nickname" : "Jose"
+			}
+		
++ Response 204
+
++ Response 400 (text/plain)
+
+		Error: El id no es un número
+	
++ Response 404
+	
+## User Create [/api/usuario]
+
+### Create [POST]
+
++ Request (application/json)
+		
+		{
+			"nickname" : "Juan",
+			"password" : "juan"
+		}	
+		
++ Response 201
+
+## User Series [api//usuario/{usuario_id}/series]
+
++ Parameters
+	+ usuario_id (number) - ID of the user
+	
+### Get series from user [GET]
+
++ Response 200 (application/json)
+
+		[
+			{
+				"id": 1,
+				"title": "The Big Bang Theory",
+				"description": "descripción de la serie The Big Bang Theory",
+				"createdAt": "2015-11-13T23:15:36.364Z",
+				"updatedAt": "2015-11-13T23:15:36.364Z",
+				"UsuarioId": 1
+			},
+			{
+				"id": 2,
+				"title": "Breaking Bad",
+				"description": "descripción de la serie Breaking Bad",
+				"createdAt": "2015-11-13T23:15:36.393Z",
+				"updatedAt": "2015-11-13T23:15:36.393Z",
+				"UsuarioId": 1
+			}
+		]
+		
++ Response 400 (text/plain)
+
+		Error: El id no es un número
+
++ Response 404
