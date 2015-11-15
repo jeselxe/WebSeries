@@ -117,6 +117,10 @@ traits:
       responses:
         204:
         400:
+          body:
+            text/plain:
+              schema: |
+                Error: El id no es un número
         404:
     delete:
       description: |
@@ -177,8 +181,31 @@ traits:
       200:
         body:
           application/json:
-            example: |
+            schema: |
               {
+                "series": [
+                  {
+                    "id": 1,
+                    "title": "The Big Bang Theory",
+                    "description": "descripción de la serie The Big Bang Theory",
+                    "createdAt": "2015-11-15T20:18:00.373Z",
+                    "updatedAt": "2015-11-15T20:18:00.373Z",
+                    "UsuarioId": 1
+                  },
+                  {
+                    "id": 2,
+                    "title": "Breaking Bad",
+                    "description": "descripción de la serie Breaking Bad",
+                    "createdAt": "2015-11-15T20:18:00.396Z",
+                    "updatedAt": "2015-11-15T20:18:00.396Z",
+                    "UsuarioId": 1
+                  }
+                ],
+                "_links": {
+                  "self": "/api/series",
+                  "first": "/api/series/?page=1",
+                  "last": "/api/series/?page=1"
+                }
               }
   post:
     is: [auth]
@@ -218,7 +245,15 @@ traits:
       responses:
         204:
         404:
+          body:
+            text/plain:
+              schema: |
+                La serie no existe
         400:
+          body:
+            text/plain:
+              schema: |
+                Error: El id no es un número
     delete:
       description: |
         Detetes the serie
@@ -228,7 +263,15 @@ traits:
       responses:
         204:
         404:
+          body:
+            text/plain:
+              schema: |
+                La serie no existe
         400:
+          body:
+            text/plain:
+              schema: |
+                Error: El id no es un número
     get:
       description: |
         Gets the serie information and its seasons and comments
@@ -236,8 +279,53 @@ traits:
       is: [paged]
       responses:
         200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "serie": {
+                    "id": 1,
+                    "title": "The Big Bang Theory",
+                    "description": "descripción de la serie The Big Bang Theory",
+                    "createdAt": "2015-11-15T20:18:00.373Z",
+                    "updatedAt": "2015-11-15T20:18:00.373Z",
+                    "UsuarioId": 1,
+                    "temporadas": [
+                      {
+                        "id": 1,
+                        "season": 1
+                      }
+
+
+                    ],
+                    "comentarios": [
+                      {
+                        "id": 61,
+                        "comment": "Comentario a serie 1",
+                        "createdAt": "2015-11-15T20:18:00.434Z",
+                        "UsuarioId": 1
+                      }
+
+
+                    ]
+                  },
+                  "_links": {
+                    "self": "/api/series/1",
+                    "first": "/api/series/1?page=1",
+                    "last": "/api/series/1?page=2",
+                    "next": "/api/series/1?page=2"
+                  }
+                }
         404:
+          body:
+            text/plain:
+              schema: |
+                La serie no existe
         400:
+          body:
+            text/plain:
+              schema: |
+                Error: El id no es un número
     /comentario:
       post:
         description: |
@@ -253,8 +341,20 @@ traits:
               }
         responses:
           201:
+            body:
+              text/plain:
+                schema: |
+                  Comentario creado correctamente
           404:
+            body:
+              text/plain:
+                schema: |
+                  La serie no existe
           400:
+            body:
+              text/plain:
+                schema: |
+                  Error: El id no es un número
       /{comment_id}:
         put:
           description: |
@@ -271,7 +371,15 @@ traits:
           responses:
             204:
             404:
+              body:
+                text/plain:
+                  example: |
+                    La serie no existe
             400:
+              body:
+                text/plain:
+                  example: |
+                    Error: El id del comentario no es un número
         delete:
           description: |
             Deletes the comment
@@ -281,7 +389,15 @@ traits:
           responses:
             204:
             404:
+              body:
+                text/plain:
+                  example: |
+                    La serie no existe
             400:
+              body:
+                text/plain:
+                  example: |
+                    Error: El id del comentario no es un número
     /temporada:
       post:
         description: |
@@ -291,8 +407,20 @@ traits:
         securedBy: [basic]
         responses:
           201:
+            body:
+              text/plain:
+                schema: |
+                  Temporada creada correctamente
           404:
+            body:
+              text/plain:
+                schema: |
+                  La serie no existe
           400:
+            body:
+              text/plain:
+                schema: |
+                  Error: El id no es un número
       /{season_id}:
         get:
           description: |
@@ -300,8 +428,30 @@ traits:
 
           responses:
             200:
+              body:
+                application/json:
+                  schema: |
+                    [
+                      {
+                        "id": 1,
+                        "title": "Capitulo 1",
+                        "createdAt": "2015-11-15T20:18:00.386Z",
+                        "updatedAt": "2015-11-15T20:18:00.386Z",
+                        "TemporadaId": 1
+                      },
+
+                      ...
+                    ]
             404:
+              body:
+                text/plain:
+                  example: |
+                    La temporada no existe
             400:
+              body:
+                text/plain:
+                  example: |
+                    Error: El id de la temporada no es un número
         delete:
           description: |
             Deletes the season
@@ -311,7 +461,15 @@ traits:
           responses:
             204:
             404:
+              body:
+                text/plain:
+                  example: |
+                    La temporada no existe
             400:
+              body:
+                text/plain:
+                  example: |
+                    Error: El id de la temporada no es un número
         /capitulo:
           post:
             description: |
@@ -328,7 +486,15 @@ traits:
             responses:
               201:
               404:
+                body:
+                  text/plain:
+                    example: |
+                      La temporada no existe
               400:
+                body:
+                  text/plain:
+                    example: |
+                      Error: El id de la temporada no es un número
           /{episode_id}:
             get:
               description: |
@@ -338,8 +504,37 @@ traits:
               securedBy: [basic]
               responses:
                 200:
+                  body:
+                    application/json:
+                      schema: |
+                        {
+                          "comentarios": [
+                            {
+                              "id": 1,
+                              "comment": "Comentario 1",
+                              "createdAt": "2015-11-15T20:18:00.421Z",
+                              "updatedAt": "2015-11-15T20:18:00.421Z",
+                              "UsuarioId": 1
+                            }
+
+
+                          ],
+                          "_links": {
+                            "self": "/api/series/1/temporada/1/capitulo/1",
+                            "first": "/api/series/1/temporada/1/capitulo/1?page=1",
+                            "last": "/api/series/1/temporada/1/capitulo/1?page=1"
+                          }
+                        }
                 404:
+                  body:
+                    text/plain:
+                      example: |
+                        El capítulo no existe
                 400:
+                  body:
+                    text/plain:
+                      example: |
+                        Error: El id del capítulo no es un número
             put:
               description: |
                 Updates the information of an episode
@@ -355,7 +550,15 @@ traits:
               responses:
                 204:
                 404:
+                  body:
+                    text/plain:
+                      example: |
+                        El capítulo no existe
                 400:
+                  body:
+                    text/plain:
+                      example: |
+                        Error: El id del capítulo no es un número
             delete:
               description: |
                 Deletes the episode
@@ -365,7 +568,15 @@ traits:
               responses:
                 204:
                 404:
+                  body:
+                    text/plain:
+                      example: |
+                        El capítulo no existe
                 400:
+                  body:
+                    text/plain:
+                      example: |
+                        Error: El id del capítulo no es un número
             /comentario:
               post:
                 description: |
@@ -382,7 +593,15 @@ traits:
                 responses:
                   201:
                   404:
+                    body:
+                      text/plain:
+                        example: |
+                          El capítulo no existe
                   400:
+                    body:
+                      text/plain:
+                        example: |
+                          Error: El id del capítulo no es un número
               /{comment_id}:
                 put:
                   description: |
@@ -399,7 +618,15 @@ traits:
                   responses:
                     204:
                     404:
+                      body:
+                        text/plain:
+                          example: |
+                            El comentario no existe
                     400:
+                      body:
+                        text/plain:
+                          example: |
+                            Error: El id del comentario no es un número
                 delete:
                   description: |
                     Deletes the comment
@@ -409,7 +636,15 @@ traits:
                   responses:
                     204:
                     404:
+                      body:
+                        text/plain:
+                          example: |
+                            El comentario no existe
                     400:
+                      body:
+                        text/plain:
+                          example: |
+                            Error: El id del comentario no es un número
 
 /tviso:
   /noticias:
@@ -420,6 +655,43 @@ traits:
 
         responses:
           200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "results":[
+                      {
+                        "idn":"56444872a53590c7158b4567",
+                        "title":"Nuevo trailer de 'The Finest Hours'",
+                        "short_text":"Short text",
+                        "idm":1572204,
+                        "mediaType":2,
+                        "status":"like",
+                        "comments":0,
+                        "created":"2015-11-12T09:06:10+01:00",
+                        "tags":["the ","finest","hours"],
+                        "author":{
+                          "uid":3326553,
+                          "nick":"greml",
+                          "full_name":"Carles Marti Casquero",
+                          "img_user":"https:\/\/cdn.tviso.com\/scripts\/usr_img.php?id=B7931D8C93E4DA4E5445"
+                          },
+                        "image":{"notice":"\/d0\/b3\/d0b3b62c46a80e12212188c67e9be5a5.jpg","country":"XX"},
+                        "total_votes":0,
+                        "views":496,
+                        "source":"",
+                        "working":1,
+                        "section":2,
+                        "promoted":true,
+                        "video":{"code":"7vNKR34MX0k","host":16},
+                        "text":"the complete news"
+                      }
+
+
+                    ],
+                    "error":0
+                  }
+
     /mas_vistas:
       get:
         description: |
@@ -427,6 +699,43 @@ traits:
 
         responses:
           200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "results":[
+                      {
+                        "idn":"56444872a53590c7158b4567",
+                        "title":"Nuevo trailer de 'The Finest Hours'",
+                        "short_text":"Short text",
+                        "idm":1572204,
+                        "mediaType":2,
+                        "status":"like",
+                        "comments":0,
+                        "created":"2015-11-12T09:06:10+01:00",
+                        "tags":["the ","finest","hours"],
+                        "author":{
+                          "uid":3326553,
+                          "nick":"greml",
+                          "full_name":"Carles Marti Casquero",
+                          "img_user":"https:\/\/cdn.tviso.com\/scripts\/usr_img.php?id=B7931D8C93E4DA4E5445"
+                          },
+                        "image":{"notice":"\/d0\/b3\/d0b3b62c46a80e12212188c67e9be5a5.jpg","country":"XX"},
+                        "total_votes":0,
+                        "views":496,
+                        "source":"",
+                        "working":1,
+                        "section":2,
+                        "promoted":true,
+                        "video":{"code":"7vNKR34MX0k","host":16},
+                        "text":"the complete news"
+                      }
+
+
+                    ],
+                    "error":0
+                  }
+
     /mas_votadas:
       get:
         description: |
@@ -434,6 +743,43 @@ traits:
 
         responses:
           200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "results":[
+                      {
+                        "idn":"56444872a53590c7158b4567",
+                        "title":"Nuevo trailer de 'The Finest Hours'",
+                        "short_text":"Short text",
+                        "idm":1572204,
+                        "mediaType":2,
+                        "status":"like",
+                        "comments":0,
+                        "created":"2015-11-12T09:06:10+01:00",
+                        "tags":["the ","finest","hours"],
+                        "author":{
+                          "uid":3326553,
+                          "nick":"greml",
+                          "full_name":"Carles Marti Casquero",
+                          "img_user":"https:\/\/cdn.tviso.com\/scripts\/usr_img.php?id=B7931D8C93E4DA4E5445"
+                          },
+                        "image":{"notice":"\/d0\/b3\/d0b3b62c46a80e12212188c67e9be5a5.jpg","country":"XX"},
+                        "total_votes":0,
+                        "views":496,
+                        "source":"",
+                        "working":1,
+                        "section":2,
+                        "promoted":true,
+                        "video":{"code":"7vNKR34MX0k","host":16},
+                        "text":"the complete news"
+                      }
+
+
+                    ],
+                    "error":0
+                  }
+
     /top:
       get:
         description: |
@@ -441,6 +787,43 @@ traits:
 
         responses:
           200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "results":[
+                      {
+                        "idn":"56444872a53590c7158b4567",
+                        "title":"Nuevo trailer de 'The Finest Hours'",
+                        "short_text":"Short text",
+                        "idm":1572204,
+                        "mediaType":2,
+                        "status":"like",
+                        "comments":0,
+                        "created":"2015-11-12T09:06:10+01:00",
+                        "tags":["the ","finest","hours"],
+                        "author":{
+                          "uid":3326553,
+                          "nick":"greml",
+                          "full_name":"Carles Marti Casquero",
+                          "img_user":"https:\/\/cdn.tviso.com\/scripts\/usr_img.php?id=B7931D8C93E4DA4E5445"
+                          },
+                        "image":{"notice":"\/d0\/b3\/d0b3b62c46a80e12212188c67e9be5a5.jpg","country":"XX"},
+                        "total_votes":0,
+                        "views":496,
+                        "source":"",
+                        "working":1,
+                        "section":2,
+                        "promoted":true,
+                        "video":{"code":"7vNKR34MX0k","host":16},
+                        "text":"the complete news"
+                      }
+
+
+                    ],
+                    "error":0
+                  }
+
     /ultimas:
       get:
         description: |
@@ -448,6 +831,43 @@ traits:
 
         responses:
           200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "results":[
+                      {
+                        "idn":"56444872a53590c7158b4567",
+                        "title":"Nuevo trailer de 'The Finest Hours'",
+                        "short_text":"Short text",
+                        "idm":1572204,
+                        "mediaType":2,
+                        "status":"like",
+                        "comments":0,
+                        "created":"2015-11-12T09:06:10+01:00",
+                        "tags":["the ","finest","hours"],
+                        "author":{
+                          "uid":3326553,
+                          "nick":"greml",
+                          "full_name":"Carles Marti Casquero",
+                          "img_user":"https:\/\/cdn.tviso.com\/scripts\/usr_img.php?id=B7931D8C93E4DA4E5445"
+                          },
+                        "image":{"notice":"\/d0\/b3\/d0b3b62c46a80e12212188c67e9be5a5.jpg","country":"XX"},
+                        "total_votes":0,
+                        "views":496,
+                        "source":"",
+                        "working":1,
+                        "section":2,
+                        "promoted":true,
+                        "video":{"code":"7vNKR34MX0k","host":16},
+                        "text":"the complete news"
+                      }
+
+
+                    ],
+                    "error":0
+                  }
+
     /{noticia_id}:
       get:
         description: |
@@ -455,6 +875,44 @@ traits:
 
         responses:
           200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "results": [
+                        {
+                            "idn": "51763cbf892b2bea6700002d",
+                            "title": "Nuevas imágenes de 'The Amazing Spider-Man 2' con Jamie Foxx y Dane DeHaan",
+                            "short_text": "El director Marc Webb vuelve a la carga en su cuenta de Twitter, ofreciendo a sus fans nuevas fotografías de 'The Amazing Spider-Man 2'. El cineasta es un asiduo a usar su perfil de la red social para...",
+                            "idm": 19339,
+                            "mediaType": 2,
+                            "status": 1,
+                            "comments": 0,
+                            "created": "2013-04-23T09:48:15+02:00",
+                            "tags": [
+                                "amazing",
+                                "spiderman",
+                                "jamie foxx",
+                                "dane dehaan"
+                            ],
+                            "author": {
+                                "uid": 297374,
+                                "nick": "JaviChaques",
+                                "full_name": "Javi Chaqués",
+                                "img_user": "https://cdn.tviso.com/scripts/usr_img.php?id=TFF44K4E6E"
+                            },
+                            "image": "https://cdn.tviso.com/noticia/777C7NFKNNRDV75D4EC6.jpg",
+                            "total_votes": 0,
+                            "shared": 0,
+                            "views": 171,
+                            "source": "http://www.ecartelera.com/noticias/13563/"
+                        }
+
+
+                   ],
+                   "error":0
+                  }
+
   /visualizaciones:
     get:
       description: |
@@ -462,6 +920,30 @@ traits:
 
       responses:
         200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "data": [
+                    {
+                        "date": "2013-05-11T00:00:00+02:00",
+                        "views": 352
+                    },
+                    {
+                        "date": "2013-05-12T00:00:00+02:00",
+                        "views": 415
+                    },
+                    {
+                        "date": "2013-05-13T00:00:00+02:00",
+                        "views": 387
+                    },
+                    {
+                        "date": "2013-05-14T00:00:00+02:00",
+                        "views": 347
+                    }
+                  ],
+                  "error": 0
+                }
       queryParameters:
         title:
           description: |
