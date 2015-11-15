@@ -8,7 +8,7 @@ securitySchemes:
   - basic:
       description: |
               This API supports Basic Authentication.
-  
+
       type: Basic Authentication
 
 traits:
@@ -33,19 +33,35 @@ traits:
             text/plain:
               schema: |
                 Autorización incorrecta
-          
+
 /usuario:
   post:
     description: |
       Registers a new user
 
+    body:
+      application/json:
+        schema: |
+          {
+            "nickname"  : "Pepe",
+            "password" : "pepe"
+          }
+
     responses:
       201:
-  
+
   /login:
     post:
       description: |
         Returns the user encoded in base64 and the token if the user exists
+
+      body:
+        application/json:
+          schema: |
+            {
+              "user" : "Pepe",
+              "password" : "pepe"
+            }
 
       responses:
         200:
@@ -58,7 +74,7 @@ traits:
                 }
         401:
           body:
-            text/plain: 
+            text/plain:
               schema: |
                 Usuario o password incorrectos
   /{usuario_id}:
@@ -81,7 +97,7 @@ traits:
                 }
         400:
           body:
-            text/plain: 
+            text/plain:
               schema: |
                 Error: El id no es un número
         404:
@@ -91,6 +107,13 @@ traits:
 
       is: [auth]
       securedBy: [basic]
+
+      body:
+        application/json:
+          example: |
+            {
+              "password" : "newPassword"
+            }
       responses:
         204:
         400:
@@ -105,9 +128,9 @@ traits:
         204:
         400:
           body:
-            text/plain: 
+            text/plain:
               schema: |
-                Error: El id no es un número        
+                Error: El id no es un número
         404:
     /series:
       get:
@@ -139,17 +162,17 @@ traits:
                   ]
           400:
             body:
-              text/plain: 
+              text/plain:
                 schema: |
-                  Error: El id no es un número          
+                  Error: El id no es un número
           404:
-          
+
 /series:
   get:
     is: [paged]
     description: |
       Returns all the series
-  
+
     responses:
       200:
         body:
@@ -163,19 +186,35 @@ traits:
     description: |
       Creates a new serie
 
+    body:
+      application/json:
+        schema: |
+          {
+            "title" : "Serie title",
+            "description" : "Serie description"
+          }
+
     responses:
       201:
         body:
-          text/plain: 
-            schema: | 
+          text/plain:
+            schema: |
               Serie creada correctamente
   /{serie_id}:
     put:
       description: |
         Updates the serie information
 
-      is: [auth] 
+      is: [auth]
       securedBy: [basic]
+      body:
+        application/json:
+          schema: |
+            {
+              "title" : "Serie title",
+              "description" : "Serie description"
+            }
+
       responses:
         204:
         404:
@@ -184,7 +223,7 @@ traits:
       description: |
         Detetes the serie
 
-      is: [auth] 
+      is: [auth]
       securedBy: [basic]
       responses:
         204:
@@ -203,9 +242,15 @@ traits:
       post:
         description: |
           Adds a new comment to the serie
-  
-        is: [auth] 
+
+        is: [auth]
         securedBy: [basic]
+        body:
+          application/json:
+            schema: |
+              {
+                "comment" : "New comment"
+              }
         responses:
           201:
           404:
@@ -214,9 +259,15 @@ traits:
         put:
           description: |
             Updates the comment
-    
-          is: [auth] 
+
+          is: [auth]
           securedBy: [basic]
+          body:
+            application/json:
+              schema: |
+                {
+                  "comment" : "Comment edited"
+                }
           responses:
             204:
             404:
@@ -224,8 +275,8 @@ traits:
         delete:
           description: |
             Deletes the comment
-    
-          is: [auth] 
+
+          is: [auth]
           securedBy: [basic]
           responses:
             204:
@@ -235,8 +286,8 @@ traits:
       post:
         description: |
           Adds a new season to a serie.
-  
-        is: [auth] 
+
+        is: [auth]
         securedBy: [basic]
         responses:
           201:
@@ -254,8 +305,8 @@ traits:
         delete:
           description: |
             Deletes the season
-    
-          is: [auth] 
+
+          is: [auth]
           securedBy: [basic]
           responses:
             204:
@@ -265,9 +316,15 @@ traits:
           post:
             description: |
               Adds a new episode to a season
-      
-            is: [auth] 
+
+            is: [auth]
             securedBy: [basic]
+            body:
+              application/json:
+                schema: |
+                  {
+                    "title" : "Episode title"
+                  }
             responses:
               201:
               404:
@@ -276,8 +333,8 @@ traits:
             get:
               description: |
                 Gets the list of comments of an episode
-        
-              is: [paged] 
+
+              is: [paged]
               securedBy: [basic]
               responses:
                 200:
@@ -286,9 +343,15 @@ traits:
             put:
               description: |
                 Updates the information of an episode
-        
-              is: [auth] 
+
+              is: [auth]
               securedBy: [basic]
+              body:
+                application/json:
+                  schema: |
+                    {
+                      "title" : "Episode title edited"
+                    }
               responses:
                 204:
                 404:
@@ -296,8 +359,8 @@ traits:
             delete:
               description: |
                 Deletes the episode
-        
-              is: [auth] 
+
+              is: [auth]
               securedBy: [basic]
               responses:
                 204:
@@ -306,10 +369,16 @@ traits:
             /comentario:
               post:
                 description: |
-                  Creates a new comment of an episode 
-          
-                is: [auth] 
+                  Creates a new comment of an episode
+
+                is: [auth]
                 securedBy: [basic]
+                body:
+                  application/json:
+                    schema: |
+                      {
+                        "comment" : "New comment"
+                      }
                 responses:
                   201:
                   404:
@@ -318,9 +387,15 @@ traits:
                 put:
                   description: |
                     Updates the comment
-            
-                  is: [auth] 
+
+                  is: [auth]
                   securedBy: [basic]
+                  body:
+                    application/json:
+                      schema: |
+                        {
+                          "comment" : "Comment edited"
+                        }
                   responses:
                     204:
                     404:
@@ -328,67 +403,66 @@ traits:
                 delete:
                   description: |
                     Deletes the comment
-            
-                  is: [auth] 
+
+                  is: [auth]
                   securedBy: [basic]
                   responses:
                     204:
                     404:
                     400:
-  
+
 /tviso:
   /noticias:
     /promocionadas:
       get:
         description: |
           Gets the promoted news
-       
+
         responses:
           200:
     /mas_vistas:
       get:
         description: |
           Gets the most seen news
-       
+
         responses:
           200:
     /mas_votadas:
       get:
         description: |
           Gets the most voted news
-       
+
         responses:
           200:
     /top:
       get:
         description: |
           Gets the top news
-       
+
         responses:
           200:
     /ultimas:
       get:
         description: |
           Gets the last news
-       
+
         responses:
           200:
     /{noticia_id}:
       get:
         description: |
           Gets the full news
-       
+
         responses:
           200:
   /visualizaciones:
     get:
       description: |
         Gets the visualization data of a serie
- 
+
       responses:
         200:
       queryParameters:
         title:
           description: |
             Title of the serie to get the data
-    
