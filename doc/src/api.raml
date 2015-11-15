@@ -1,0 +1,394 @@
+#%RAML 0.8
+
+title: Web Series API
+baseUri: http://webseries.herokuapp.com/api
+version: v1
+
+securitySchemes:
+  - basic:
+      description: |
+              This API supports Basic Authentication.
+  
+      type: Basic Authentication
+
+traits:
+  - paged:
+      queryParameters:
+        page:
+          description: The number of the page to get
+          type: number
+  - auth:
+      queryParameters:
+        auth_token:
+          description: Authorization token
+          type: string
+      headers:
+        Authorization:
+          description: Basic authentication header
+          example: |
+            Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+      responses:
+        401:
+          body:
+            text/plain:
+              schema: |
+                Autorización incorrecta
+          
+/usuario:
+  post:
+    description: |
+      Registers a new user
+
+    responses:
+      201:
+  
+  /login:
+    post:
+      description: |
+        Returns the user encoded in base64 and the token if the user exists
+
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "basic": "UGVwZTpwZXBl",
+                  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpbiI6IlBlcGUiLCJleHAiOjE0NDgwNjE5NjkyOTl9.rO0tuIZM7-4JrAauXOi3uYa_VXXkcgmLTJ0EzoiTqFk"
+                }
+        401:
+          body:
+            text/plain: 
+              schema: |
+                Usuario o password incorrectos
+  /{usuario_id}:
+    get:
+      description: |
+        Returns the user encoded in base64 and the token if the user exists
+
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 1,
+                  "nickname": "Pepe",
+                  "password": "pepe",
+                  "token": null,
+                  "createdAt": "2015-11-13T22:10:27.696Z",
+                  "updatedAt": "2015-11-13T22:10:27.696Z"
+                }
+        400:
+          body:
+            text/plain: 
+              schema: |
+                Error: El id no es un número
+        404:
+    put:
+      description: |
+        Updates the user information
+
+      is: [auth]
+      securedBy: [basic]
+      responses:
+        204:
+        400:
+        404:
+    delete:
+      description: |
+        Deletes the user
+
+      is: [auth]
+      securedBy: [basic]
+      responses:
+        204:
+        400:
+          body:
+            text/plain: 
+              schema: |
+                Error: El id no es un número        
+        404:
+    /series:
+      get:
+        description: |
+          Get the series from the user
+
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  [
+                    {
+                      "id": 1,
+                      "title": "The Big Bang Theory",
+                      "description": "descripción de la serie The Big Bang Theory",
+                      "createdAt": "2015-11-13T23:15:36.364Z",
+                      "updatedAt": "2015-11-13T23:15:36.364Z",
+                      "UsuarioId": 1
+                    },
+                    {
+                      "id": 2,
+                      "title": "Breaking Bad",
+                      "description": "descripción de la serie Breaking Bad",
+                      "createdAt": "2015-11-13T23:15:36.393Z",
+                      "updatedAt": "2015-11-13T23:15:36.393Z",
+                      "UsuarioId": 1
+                    }
+                  ]
+          400:
+            body:
+              text/plain: 
+                schema: |
+                  Error: El id no es un número          
+          404:
+          
+/series:
+  get:
+    is: [paged]
+    description: |
+      Returns all the series
+  
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+              }
+  post:
+    is: [auth]
+    securedBy: [basic]
+    description: |
+      Creates a new serie
+
+    responses:
+      201:
+        body:
+          text/plain: 
+            schema: | 
+              Serie creada correctamente
+  /{serie_id}:
+    put:
+      description: |
+        Updates the serie information
+
+      is: [auth] 
+      securedBy: [basic]
+      responses:
+        204:
+        404:
+        400:
+    delete:
+      description: |
+        Detetes the serie
+
+      is: [auth] 
+      securedBy: [basic]
+      responses:
+        204:
+        404:
+        400:
+    get:
+      description: |
+        Gets the serie information and its seasons and comments
+
+      is: [paged]
+      responses:
+        200:
+        404:
+        400:
+    /comentario:
+      post:
+        description: |
+          Adds a new comment to the serie
+  
+        is: [auth] 
+        securedBy: [basic]
+        responses:
+          201:
+          404:
+          400:
+      /{comment_id}:
+        put:
+          description: |
+            Updates the comment
+    
+          is: [auth] 
+          securedBy: [basic]
+          responses:
+            204:
+            404:
+            400:
+        delete:
+          description: |
+            Deletes the comment
+    
+          is: [auth] 
+          securedBy: [basic]
+          responses:
+            204:
+            404:
+            400:
+    /temporada:
+      post:
+        description: |
+          Adds a new season to a serie.
+  
+        is: [auth] 
+        securedBy: [basic]
+        responses:
+          201:
+          404:
+          400:
+      /{season_id}:
+        get:
+          description: |
+            Gets all the episodes of a season
+
+          responses:
+            200:
+            404:
+            400:
+        delete:
+          description: |
+            Deletes the season
+    
+          is: [auth] 
+          securedBy: [basic]
+          responses:
+            204:
+            404:
+            400:
+        /capitulo:
+          post:
+            description: |
+              Adds a new episode to a season
+      
+            is: [auth] 
+            securedBy: [basic]
+            responses:
+              201:
+              404:
+              400:
+          /{episode_id}:
+            get:
+              description: |
+                Gets the list of comments of an episode
+        
+              is: [paged] 
+              securedBy: [basic]
+              responses:
+                200:
+                404:
+                400:
+            put:
+              description: |
+                Updates the information of an episode
+        
+              is: [auth] 
+              securedBy: [basic]
+              responses:
+                204:
+                404:
+                400:
+            delete:
+              description: |
+                Deletes the episode
+        
+              is: [auth] 
+              securedBy: [basic]
+              responses:
+                204:
+                404:
+                400:
+            /comentario:
+              post:
+                description: |
+                  Creates a new comment of an episode 
+          
+                is: [auth] 
+                securedBy: [basic]
+                responses:
+                  201:
+                  404:
+                  400:
+              /{comment_id}:
+                put:
+                  description: |
+                    Updates the comment
+            
+                  is: [auth] 
+                  securedBy: [basic]
+                  responses:
+                    204:
+                    404:
+                    400:
+                delete:
+                  description: |
+                    Deletes the comment
+            
+                  is: [auth] 
+                  securedBy: [basic]
+                  responses:
+                    204:
+                    404:
+                    400:
+  
+/tviso:
+  /noticias:
+    /promocionadas:
+      get:
+        description: |
+          Gets the promoted news
+       
+        responses:
+          200:
+    /mas_vistas:
+      get:
+        description: |
+          Gets the most seen news
+       
+        responses:
+          200:
+    /mas_votadas:
+      get:
+        description: |
+          Gets the most voted news
+       
+        responses:
+          200:
+    /top:
+      get:
+        description: |
+          Gets the top news
+       
+        responses:
+          200:
+    /ultimas:
+      get:
+        description: |
+          Gets the last news
+       
+        responses:
+          200:
+    /{noticia_id}:
+      get:
+        description: |
+          Gets the full news
+       
+        responses:
+          200:
+  /visualizaciones:
+    get:
+      description: |
+        Gets the visualization data of a serie
+ 
+      responses:
+        200:
+      queryParameters:
+        title:
+          description: |
+            Title of the serie to get the data
+    
