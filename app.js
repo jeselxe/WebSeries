@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/series', series);
 app.use('/api/usuario', usuario);
-app.use('/api/noticias', news);
+app.use('/api/tviso', news);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
