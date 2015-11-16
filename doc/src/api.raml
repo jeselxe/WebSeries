@@ -10,6 +10,14 @@ securitySchemes:
               This API supports Basic Authentication.
 
       type: Basic Authentication
+  - oauth_v2:
+      description: |
+          This Connection uses oauth_v2
+
+      type: OAuth 2.0
+      settings:
+          authorizationUri: https://api.tviso.com/auth_token
+          accessTokenUri: https://api.series.ly/v2/user/user_login
 
 traits:
   - paged:
@@ -648,6 +656,51 @@ traits:
 
 /tviso:
   /noticias:
+    /interesantes:
+      securedBy: [oauth_v2]
+      get:
+        description: |
+          Gets the promoted news
+
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "results":[
+                      {
+                        "idn":"56444872a53590c7158b4567",
+                        "title":"Nuevo trailer de 'The Finest Hours'",
+                        "short_text":"Short text",
+                        "idm":1572204,
+                        "mediaType":2,
+                        "status":"like",
+                        "comments":0,
+                        "created":"2015-11-12T09:06:10+01:00",
+                        "tags":["the ","finest","hours"],
+                        "author":{
+                          "uid":3326553,
+                          "nick":"greml",
+                          "full_name":"Carles Marti Casquero",
+                          "img_user":"https:\/\/cdn.tviso.com\/scripts\/usr_img.php?id=B7931D8C93E4DA4E5445"
+                          },
+                        "image":{"notice":"\/d0\/b3\/d0b3b62c46a80e12212188c67e9be5a5.jpg","country":"XX"},
+                        "total_votes":0,
+                        "views":496,
+                        "source":"",
+                        "working":1,
+                        "section":2,
+                        "promoted":true,
+                        "video":{"code":"7vNKR34MX0k","host":16},
+                        "text":"the complete news"
+                      }
+
+
+                    ],
+                    "error":0
+                  }
+
     /promocionadas:
       get:
         description: |

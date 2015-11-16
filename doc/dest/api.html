@@ -369,7 +369,40 @@
 </pre></li></ul><h3>Query Parameters</h3><ul><li><strong>auth_token</strong>: <em>(string)</em><p>Authorization token</p></li></ul></div><div class="tab-pane" id="series__serie_id__temporada__season_id__capitulo__episode_id__comentario__comment_id__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/204" target="_blank">204</a></h2><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><h3>Body</h3><p><strong>Type: text/plain</strong></p><p><strong>Example</strong>:</p><pre><code>Error: El id del comentario no es un número
 </code></pre><h2>HTTP status code <a href="http://httpstatus.es/401" target="_blank">401</a></h2><h3>Body</h3><p><strong>Type: text/plain</strong></p><p><strong>Schema</strong>:</p><pre><code>Autorización incorrecta
 </code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: text/plain</strong></p><p><strong>Example</strong>:</p><pre><code>El comentario no existe
-</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="tviso" class="panel-title">/tviso</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_tviso_noticias_promocionadas"><span class="parent">/tviso/noticias</span>/promocionadas</a> <span class="methods"><a href="#tviso_noticias_promocionadas_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_tviso_noticias_promocionadas" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#tviso_noticias_promocionadas_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Gets the promoted news</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="tviso_noticias_promocionadas_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/tviso/noticias</span>/promocionadas</h4></div><div class="modal-body"><div class="alert alert-info"><p>Gets the promoted news</p></div><ul class="nav nav-tabs"><li><a href="#tviso_noticias_promocionadas_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane" id="tviso_noticias_promocionadas_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="tviso" class="panel-title">/tviso</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_tviso_noticias_interesantes"><span class="parent">/tviso/noticias</span>/interesantes</a> <span class="methods"><a href="#tviso_noticias_interesantes_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_tviso_noticias_interesantes" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#tviso_noticias_interesantes_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Gets the promoted news</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="tviso_noticias_interesantes_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/tviso/noticias</span>/interesantes</h4></div><div class="modal-body"><div class="alert alert-info"><p>Gets the promoted news</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by oauth_v2</div><ul class="nav nav-tabs"><li><a href="#tviso_noticias_interesantes_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane" id="tviso_noticias_interesantes_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "results":[
+    {
+      "idn":"56444872a53590c7158b4567",
+      "title":"Nuevo trailer de &#39;The Finest Hours&#39;",
+      "short_text":"Short text",
+      "idm":1572204,
+      "mediaType":2,
+      "status":"like",
+      "comments":0,
+      "created":"2015-11-12T09:06:10+01:00",
+      "tags":["the ","finest","hours"],
+      "author":{
+        "uid":3326553,
+        "nick":"greml",
+        "full_name":"Carles Marti Casquero",
+        "img_user":"https:\/\/cdn.tviso.com\/scripts\/usr_img.php?id=B7931D8C93E4DA4E5445"
+        },
+      "image":{"notice":"\/d0\/b3\/d0b3b62c46a80e12212188c67e9be5a5.jpg","country":"XX"},
+      "total_votes":0,
+      "views":496,
+      "source":"",
+      "working":1,
+      "section":2,
+      "promoted":true,
+      "video":{"code":"7vNKR34MX0k","host":16},
+      "text":"the complete news"
+    }
+
+
+  ],
+  "error":0
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_tviso_noticias_promocionadas"><span class="parent">/tviso/noticias</span>/promocionadas</a> <span class="methods"><a href="#tviso_noticias_promocionadas_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_tviso_noticias_promocionadas" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#tviso_noticias_promocionadas_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Gets the promoted news</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="tviso_noticias_promocionadas_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/tviso/noticias</span>/promocionadas</h4></div><div class="modal-body"><div class="alert alert-info"><p>Gets the promoted news</p></div><ul class="nav nav-tabs"><li><a href="#tviso_noticias_promocionadas_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane" id="tviso_noticias_promocionadas_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
   "results":[
     {
       "idn":"56444872a53590c7158b4567",
