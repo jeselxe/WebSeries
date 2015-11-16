@@ -1,7 +1,7 @@
 var jwt = require('jwt-simple');
 var moment = require('moment');
 var models = require('./models');
-var config = require('./config')
+var config = require('./configuration/config')
 
 function decodeToken(token) {
 	var decoded = {};

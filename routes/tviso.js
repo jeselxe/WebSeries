@@ -135,9 +135,7 @@ router.get('/noticias/ultimas', function (req, res) {
 		});
 	});
 });
-/**
- * A falta de que funcione el user_token
- *
+
 router.get('/noticias/interesantes', function (req, res) {
 	getAuthToken().then(function(body) {
 		var token = JSON.parse(body).auth_token;
@@ -148,8 +146,7 @@ router.get('/noticias/interesantes', function (req, res) {
 				uri : config.tviso.url + "/news/interesting",
 				qs : {
 					auth_token : token,
-					user_token : req.query.user_token,
-					id : req.params.id
+					user_token : req.query.user_token
 				}
 			}
 			
@@ -160,13 +157,13 @@ router.get('/noticias/interesantes', function (req, res) {
 		}
 		else {
 			var redirectUrl = "http://" + req.headers.host + req.originalUrl;
-			var oauth = config.tviso.url + "/user/user_login?auth_token=" + token + "&redirect_url=" + redirectUrl;
+			var oauth = config.seriesly.url + "/user/user_login?auth_token=" + token + "&redirect_url=" + redirectUrl;
 			
 			res.redirect(oauth);
 		}
 	});
 });
-*/
+
 router.get('/noticias/:id', function (req, res) {
 	getAuthToken().then(function(body) {
 		var token = JSON.parse(body).auth_token;
