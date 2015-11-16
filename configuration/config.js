@@ -10,7 +10,11 @@ module.exports = {
 		}
 	},
 	tviso : {
+		url : 'https://api.tviso.com',
 		id_api : '3436',
 		secret : '7hfreuhCnfFekNwshxUn'
+	},
+	seriesly : {
+		url : 'http://api.series.ly/v2'
 	}
 }

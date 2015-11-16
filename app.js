@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/series', series);
 app.use('/api/usuario', usuario);
-app.use('/api/noticias', news);
+app.use('/api/tviso', news);
 
 app.use('/api/doc', function (req, res) {
     res.sendFile(__dirname + '/doc/dest/api.html');
