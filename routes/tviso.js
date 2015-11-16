@@ -1,5 +1,5 @@
 var request = require('request-promise');
-var config = require('../config');
+var config = require('../configuration/config');
 var express = require('express');
 var router  = express.Router();
 
