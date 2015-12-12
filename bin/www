@@ -5,10 +5,15 @@ var models = require("../models");
 var data = require('../data');
 
 var PORT = process.env.PORT || 8000;
-
-data.fillData()
-.then(function(){
+if (process.env.PROD) {
 	app.listen(PORT, function () {
-		console.log("Server running on port " + PORT);
+			console.log("Server running on port " + PORT);
 	});
-});
+} else {
+	data.fillData()
+	.then(function(){
+		app.listen(PORT, function () {
+			console.log("Server running on port " + PORT);
+		});
+	});
+}
